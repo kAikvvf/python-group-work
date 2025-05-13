@@ -1,187 +1,191 @@
-class codeChecker:
-    def debugger(prog):
-        try:
-            eval(prog) #引数に実行するプログラムを文字列で入力
+import sys
 
+class codeDebugger:
+    def debug(prog):
+        sys.stdout = open("debugDirectory.txt","w")
+        try: #引数に実行するプログラムを文字列で入力
+            eval(prog)
             
 #-------------以下でほぼ全てのエラーに対応し判別----------------
         except AssertionError as error:
-            return(f"AssertionError : {error}")
+            print(f"AssertionError : {error}")
         
         except AttributeError as error:
-            return(f"AttributeError : {error}")
+            print(f"AttributeError : {error}")
         
         except EOFError as error:
-            return(f"EOFError : {error}")
+            print(f"EOFError : {error}")
         
         except GeneratorExit as error:
-            return(f"GeneratorExit : {error}")
+            print(f"GeneratorExit : {error}")
         
         except ModuleNotFoundError as error:
-            return(f"ModuleNotFoundError : {error}")
+            print(f"ModuleNotFoundError : {error}")
         
         except IndexError as error:
-            return(f"IndexError : {error}")
+            print(f"IndexError : {error}")
         
         except KeyError as error:
-            return(f"KeyError : {error}")
+            print(f"KeyError : {error}")
         
         except KeyboardInterrupt as error:
-            return(f"KerboardInterrupt : {error}")
+            print(f"KerboardInterrupt : {error}")
         
         except MemoryError as error:
-            return(f"MemoryError : {error}")
+            print(f"MemoryError : {error}")
         
         except NotImplementedError as error:
-            return(f"NotImplentedError : {error}")
+            print(f"NotImplentedError : {error}")
         
         except OverflowError as error:
-            return(f"OverflowError : {error}")
+            print(f"OverflowError : {error}")
         
         except PythonFinalizationError as error:
-            return(f"PythonFinalizationError : {error}")
+            print(f"PythonFinalizationError : {error}")
         
         except RecursionError as error:
-            return(f"RecursionError : {error}")
+            print(f"RecursionError : {error}")
         
         except ReferenceError as error:
-            return(f"ReferencError: {error}")
+            print(f"ReferencError: {error}")
         
         except RuntimeError as error:
-            return(f"RuntimeError : {error}")
+            print(f"RuntimeError : {error}")
         
         except StopIteration as error:
-            return(f"StopIteration : {error}")
+            print(f"StopIteration : {error}")
         
         except StopAsyncIteration as error:
-            return(f"StopAsyncIteration : {error}")
+            print(f"StopAsyncIteration : {error}")
 
         except SyntaxError as error:
-            return(f"SyntaxError : {error}")
+            print(f"SyntaxError : {error}")
         
         except IndentationError as error:
-            return(f"IndentationError : {error}")
+            print(f"IndentationError : {error}")
         
         except TabError as error:
-            return(f"TabError : {error}")
+            print(f"TabError : {error}")
         
         except SystemError as error:
-            return(f"SystemError : {error}")
+            print(f"SystemError : {error}")
         
         except SystemExit as error:
-            return(f"SystemExit : {error}")
+            print(f"SystemExit : {error}")
         
         except TypeError as error:
-            return(f"TypeError : {error}")
+            print(f"TypeError : {error}")
         
         except UnboundLocalError as error:
-            return(f"UnboundLocalError : {error}")
+            print(f"UnboundLocalError : {error}")
         
         except UnicodeError as error:
-            return(f"UnicodeError : {error}")
+            print(f"UnicodeError : {error}")
         
         except UnicodeEncodeError as error:
-            return(f"UnicodeEncodeError : {error}")
+            print(f"UnicodeEncodeError : {error}")
         
         except UnicodeDecodeError as error:
-            return(f"UnicodeDecodeError : {error}")
+            print(f"UnicodeDecodeError : {error}")
         
         except UnicodeTranslateError as error:
-            return(f"UnicodeTranslateError : {error}")
+            print(f"UnicodeTranslateError : {error}")
         
         except ZeroDivisionError as error:
-            return(f"ZeroDivisionError : {error}")
+            print(f"ZeroDivisionError : {error}")
         
         except EnvironmentError as error:
-            return(f"EnvironmentError : {error}")
+            print(f"EnvironmentError : {error}")
         
         except IOError as error:
-            return(f"TOError : {error}")
+            print(f"TOError : {error}")
         
         except WindowsError as error:
-            return(f"WindowsError : {error}")
+            print(f"WindowsError : {error}")
         
         except BlockingIOError as error:
-            return(f"BlockingIOError : {error}")
+            print(f"BlockingIOError : {error}")
         
         except ChildProcessError as error:
-            return(f"ChildProcessError : {error}")
+            print(f"ChildProcessError : {error}")
         
         except ConnectionError as error:
-            return(f"ConnentionError : {error}")
+            print(f"ConnentionError : {error}")
         
         except BrokenPipeError as error:
-            return(f"BrokenPipeError : {error}")
+            print(f"BrokenPipeError : {error}")
         
         except ConnectionAbortedError as error:
-            return(f"ConnectionAbortedError : {error}")
+            print(f"ConnectionAbortedError : {error}")
         
         except ConnectionRefusedError as error:
-            return(f"ConnectionRefusedError : {error}")
+            print(f"ConnectionRefusedError : {error}")
         
         except ConnectionResetError as error:
-            return(f"ConnectionResetError : {error}")
+            print(f"ConnectionResetError : {error}")
         
         except FileExistsError as error:
-            return(f"FileExistsError : {error}")
+            print(f"FileExistsError : {error}")
         
         except FileNotFoundError as error:
-            return(f"FileNotFoundError : {error}")
+            print(f"FileNotFoundError : {error}")
         
         except InterruptedError as error:
-            return(f"InterruptedError : {error}")
+            print(f"InterruptedError : {error}")
         
         except IsADirectoryError as error:
-            return(f"IsADirectoryError : {error}")
+            print(f"IsADirectoryError : {error}")
         
         except NotADirectoryError as error:
-            return(f"NotADirtectoryError : {error}")
+            print(f"NotADirtectoryError : {error}")
         
         except PermissionError as error:
-            return(f"PermissionError : {error}")
+            print(f"PermissionError : {error}")
         
         except ProcessLookupError as error:
-            return(f"ProcessLookupError : {error}")
+            print(f"ProcessLookupError : {error}")
         
         except TimeoutError as error:
-            return(f"TimeoutError : {error}")
+            print(f"TimeoutError : {error}")
                 
         except UserWarning as warning:
-            return(f"UserWarning : {warning}")
+            print(f"UserWarning : {warning}")
         
         except DeprecationWarning as warning:
-            return(f"DeprecationWarning : {warning}")
+            print(f"DeprecationWarning : {warning}")
         
         except PendingDeprecationWarning as warning:
-            return(f"PendingDeprecationWarning : {warning}")
+            print(f"PendingDeprecationWarning : {warning}")
         
         except SyntaxWarning as warning:
-            return(f"SyntaxWarning : {warning}")
+            print(f"SyntaxWarning : {warning}")
         
         except RuntimeWarning as warning:
-            return(f"RuntimeWarning : {warning}")
+            print(f"RuntimeWarning : {warning}")
         
         except FutureWarning as warning:
-            return(f"FututeWarning : {warning}")
+            print(f"FututeWarning : {warning}")
         
         except ImportWarning as warning:
-            return(f"ImportWarning : {warning}")
+            print(f"ImportWarning : {warning}")
         
         except UnicodeWarning as warning:
-            return(f"UnicodeWarning : {warning}")
+            print(f"UnicodeWarning : {warning}")
         
         except EncodingWarning as warning:
-            return(f"EndcodingWarning : {warning}")
+            print(f"EndcodingWarning : {warning}")
         
         except BytesWarning as warning:
-            return(f"BytesWarning : {warning}")
+            print(f"BytesWarning : {warning}")
         
         except ResourceWarning as warning:
-            return(f"ResourceWarning : {warning}")
+            print(f"ResourceWarning : {warning}")
 
         except Exception as error:
-            return(f"予期しないエラーが発生しました:{error}")
+            print(f"予期しないエラーが発生しました:{error}")
 
 # もしエラーが見つからなかった場合には、"qualified" と返す
-        else:
-            return("qualified")
+        finally:
+            sys.stdout.close()
+            sys.stdout = sys.__stdout__
+            return(open("debugDirectory.txt","r").read())

@@ -1,10 +1,8 @@
-from lib.codeChecker import codeChecker
+from libraries.codeDebugger import codeDebugger
+import sys
 
-prog = "print(3)"
+prog = "print(2+2)"
 
-test = codeChecker.debugger(prog)
+test = codeDebugger.debug(prog)
 
-if test == "qualified":
-    eval(prog)
-else:
-    print(test)
+print(test)
