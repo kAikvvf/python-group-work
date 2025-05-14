@@ -1,7 +1,6 @@
 from libraries.codeDebugger import codeDebugger
-import sys
 
-prog = "print(2+2)"
+prog = "print(1/0)"
 
 test = codeDebugger.debug(prog)
 

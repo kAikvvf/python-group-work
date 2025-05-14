@@ -1,1 +1,1 @@
-4
+ZeroDivisionError : division by zero
