@@ -1,21 +1,14 @@
 from tkinter import *
-from tkinter import ttk
-from libraries.codeDebugger import codeDebugger
+from scripts.prompt import prompt
 
 root = Tk()
-root.title("Hello World")
+root.title("Python-Techful")
 
-input_area = Text(root,width=30)
-input_area.pack(padx= 20,pady=10)
-
-def confirm_prog():
-    prog = input_area.get("1.0",END)
-    print(prog)
-    print(type(prog))
-    debug = codeDebugger.debug(prog)
-    print(debug)
-
-confirm_button = Button(command=confirm_prog)
-confirm_button.pack()
+cmd_prompt = prompt(root_Tk=root,
+                    width=40,row=10,
+                    input_pack_padx=30,
+                    input_pack_pady=30,
+                    input_font_size=12
+                    )
 
 root.mainloop()

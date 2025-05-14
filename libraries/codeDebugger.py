@@ -1,11 +1,17 @@
 import sys
+import importlib
 
 class codeDebugger:
     def debug(prog):
+        makedebugFile = open("debugFile.py","w")
+        makedebugFile.writelines(prog)
+        makedebugFile.close()
         sys.stdout = open("debugDirectory.txt","w")
         try: #引数に実行するプログラムを文字列で入力
-            eval(prog)
-            
+            debugProg = importlib.import_module("debugFile")
+            importlib.reload(debugProg)
+            debugProg.run()
+
 #-------------以下でほぼ全てのエラーに対応し判別----------------
         except AssertionError as error:
             print(f"AssertionError : {error}")
@@ -184,7 +190,6 @@ class codeDebugger:
         except Exception as error:
             print(f"予期しないエラーが発生しました:{error}")
 
-# もしエラーが見つからなかった場合には、"qualified" と返す
         finally:
             sys.stdout.close()
             sys.stdout = sys.__stdout__
