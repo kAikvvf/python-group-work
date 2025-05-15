@@ -1,5 +1,4 @@
 def run():
-    def a(x):
-        print(x**2)
-    
-    a(4/0)
+    def test(x):
+        return(x ** 3)
+    print(test(4))

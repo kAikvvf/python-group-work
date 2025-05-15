@@ -188,7 +188,7 @@ class codeDebugger:
             print(f"ResourceWarning : {warning}")
 
         except Exception as error:
-            print(f"予期しないエラーが発生しました:{error}")
+            print(f"unexpectedError:{error}")
 
         finally:
             sys.stdout.close()
