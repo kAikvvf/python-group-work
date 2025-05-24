@@ -1,5 +1,7 @@
+from libraries.caseVerificator import getCaseInput
 def run():
-    def sum(x,y):
-        return(x+y)
-    
-    print(sum(6,3))
+    x = getCaseInput(0,0,"first")
+    y = getCaseInput(0,1,"second")
+    z = getCaseInput(0,2,"third")
+    print(x+y+z)
+    print(x,y,z)

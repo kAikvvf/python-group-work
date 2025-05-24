@@ -7,20 +7,24 @@ class prompt:
                  root_Tk,
                  input_font_size = 5,
                  ):
-        self.Prompt = tk.Canvas(master=root_Tk)
-        Button_Pad = tk.Canvas(master=self.Prompt)
+        self.Prompt = tk.Canvas(master=root_Tk) #プロンプト全体のエリア
+        Button_Pad = tk.Canvas(master=self.Prompt) #ボタンを表示するエリア
+
+        #コマンドを入力するプロンプトのウィジェット
         self.input_pad = tk.Text(self.Prompt,
                                  font=("Bahnschrift SemiCondensed",input_font_size),
                                  foreground="#FFFFFF",
                                  background="#2D2D2D")
         
+        #サンプル実行ボタン
         test_debug_button = tk.Button(Button_Pad,
                                       text="サンプル実行",
-                                      command=self.debug,
+                                      command=self.test_debug,
                                       font=("BIZ UDゴシック",10,"bold"),
                                       background="#69B7FC",
                                       relief="groove")
 
+        #採点ボタン
         confirm_answer_button = tk.Button(Button_Pad,
                                           text="採点",
                                           command=self.confirm_answer,
@@ -28,13 +32,13 @@ class prompt:
                                           background="#FF6FBC",
                                           relief="groove")
 
+        #各コンポーネントを配置
         test_debug_button.pack(anchor=tk.SE,side=tk.LEFT,padx=5,pady=3,ipadx=3,ipady=3)
-        
         confirm_answer_button.pack(anchor=tk.SE,side=tk.LEFT,padx=5,pady=3,ipadx=3,ipady=3)
         Button_Pad.pack(anchor=tk.SE,side=tk.BOTTOM)
         self.input_pad.pack(fill=tk.BOTH,expand=1)
 
-        #----------編集時に書きやすくする----------#
+        #----------編集時に書きやすくするコマンド----------#
         self.indent = 0
         self.index = 0
 
@@ -81,24 +85,44 @@ class prompt:
         self.input_pad.bind('<Shift-Tab>',shiftTabKey)
 
         #--------------------#
+    
+    #サンプル実行
+    def test_debug(self):
+        print("sample")
+        print(self.debug())
+    
+    #採点する
     def confirm_answer(self):
-        self.debug()
-        print(self.get_result())
+        print("confirm")
+        print(self.debug())
 
+    #デバッグする
     def debug(self):
         prog = self.input_pad.get("1.0","end").splitlines("\n")
+        num_of_input = 0
+        task_num = 0
         for i in range(len(prog)):
+            if "input(" in prog[i]:
+                prog[i] = prog[i].replace("input(",f"getCaseInput({task_num},{num_of_input},")
+                num_of_input += 1
             prog[i] = "    " + prog[i]
-        prog = ["def run():\n"]+prog
+        prog = ["from libraries.caseVerificator import getCaseInput\ndef run():\n"]+prog
         debugger = codeDebugger
-        self.result = debugger.debug(prog)
+        result = debugger.debug(prog=prog)
+        return(result)
         
-
+    #デバッグの結果を取得
     def get_result(self):
-        return(self.result)
+        return(self.debug())
 
+    #プロンプトを表示
     def show(self):
         self.Prompt.place(relheight=1.0,relwidth=0.5,relx=0.5,rely=0.0)
 
+    #プロンプトを非表示
     def hide(self):
         self.Prompt.place_forget()
+    
+    #サンプルケースを設定
+    def setInputSampleCase(self,cases):
+        self.input_cases = cases
