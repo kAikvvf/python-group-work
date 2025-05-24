@@ -32,41 +32,53 @@ class prompt:
         confirm_answer_button.pack(anchor=tk.SE,side=tk.LEFT,padx=5,pady=3,ipadx=3,ipady=3)
         Button_Pad.pack(anchor=tk.SE,side=tk.BOTTOM)
         self.input_pad.pack(fill=tk.BOTH,expand=1)
-        #----------編集時に書きやすくする----------#
 
+        #----------編集時に書きやすくする----------#
         self.indent = 0
         self.index = 0
 
-        def addIndent(func):
-            def indentWrapper(*args,**kwargs):
-                func(*args,**kwargs)
-                if self.indent > 0 & self.index % 4 ==0:
-                    self.input_pad.insert('insert',"\n")
-                    for i in range(self.indent):
-                        self.input_pad.insert('insert',"    ")
-            return indentWrapper
-
-        @addIndent
-        def checkIndent(event):
+        #__改行時にインデントをそろえる__
+        def arrangeIndent(event):
             index_now = self.input_pad.index('insert')
             row_now = math.floor(float(index_now))
             content_in_line = self.input_pad.get(f'{row_now}.0',f'{row_now}.end')
-            index = 0
-
-            #インデントのスペースを数える
-            while True:
-                if content_in_line[index] != " ":
-                    break
-                index +=1
-            #インデントを次の行に入れる
-            indent = index // 4
-
-            self.index = index
-            self.indent = indent
-
-        self.input_pad.bind('<Return>',checkIndent)
+            
+            self.input_pad.insert('insert',"\n")
+            if content_in_line != "":
+                #インデントのスペースを数える
+                index = 0
+                while index < len(content_in_line):
+                    if content_in_line[index] != " ":
+                        break
+                    index +=1
+                print(index)
+                #インデントを次の行に入れる
+                indent = index // 4
 
 
+                if content_in_line[len(content_in_line)-1] == ":":
+                    indent += 1
+
+                if indent > 0 & index % 4 ==0:
+                    for i in range(indent):
+                        self.input_pad.insert('insert',"    ")
+            
+            return "break"
+        #インデントを Tab で入れる
+        def tabKey(event):
+            self.input_pad.insert('insert',"    ")
+            return 'break'
+        
+        def shiftTabKey(event):
+            if self.input_pad.get('insert -4c','insert') == "    ":
+                self.input_pad.delete('insert -4c','insert')
+            return 'break'
+
+        self.input_pad.bind('<Return>',arrangeIndent)
+        self.input_pad.bind('<Tab>',tabKey)
+        self.input_pad.bind('<Shift-Tab>',shiftTabKey)
+
+        #--------------------#
     def confirm_answer(self):
         self.debug()
         print(self.get_result())
