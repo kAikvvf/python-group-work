@@ -10,9 +10,10 @@ class prompt:
         self.Prompt = tk.Canvas(master=root_Tk)
         Button_Pad = tk.Canvas(master=self.Prompt)
         self.input_pad = tk.Text(self.Prompt,
-                                 font=("",input_font_size),
-                                 foreground="#000000",
-                                 background="#FFFFFF")
+                                 font=("Bahnschrift SemiCondensed",input_font_size),
+                                 foreground="#FFFFFF",
+                                 background="#2D2D2D")
+        
         test_debug_button = tk.Button(Button_Pad,
                                       text="サンプル実行",
                                       command=self.debug,
@@ -51,7 +52,6 @@ class prompt:
                     if content_in_line[index] != " ":
                         break
                     index +=1
-                print(index)
                 #インデントを次の行に入れる
                 indent = index // 4
 
@@ -61,9 +61,9 @@ class prompt:
 
                 if indent > 0 & index % 4 ==0:
                     for i in range(indent):
-                        self.input_pad.insert('insert',"    ")
-            
+                        self.input_pad.insert('insert',"    ")            
             return "break"
+
         #インデントを Tab で入れる
         def tabKey(event):
             self.input_pad.insert('insert',"    ")
@@ -74,6 +74,8 @@ class prompt:
                 self.input_pad.delete('insert -4c','insert')
             return 'break'
 
+        #__実行部分__
+        self.input_pad.configure(insertbackground="#FFFFFF",insertwidth=3)
         self.input_pad.bind('<Return>',arrangeIndent)
         self.input_pad.bind('<Tab>',tabKey)
         self.input_pad.bind('<Shift-Tab>',shiftTabKey)
@@ -82,7 +84,6 @@ class prompt:
     def confirm_answer(self):
         self.debug()
         print(self.get_result())
-        print(type(self.get_result()))
 
     def debug(self):
         prog = self.input_pad.get("1.0","end").splitlines("\n")
