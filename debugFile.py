@@ -1,4 +1,7 @@
 from libraries.caseVerificator import getCaseInput
 def run():
-    x = getCaseInput(0,0,"any")
-    print(x)
+    x = 4
+    if x == 5:
+        print(x)
+    else:
+        print(100000)

@@ -45,6 +45,8 @@ class prompt:
         #__改行時にインデントをそろえる__
         def arrangeIndent(event):
             index_now = self.input_pad.index('insert')
+            index_inline_now = self.input_pad.index('insert lineend')
+            print(index_now,index_inline_now)
             row_now = math.floor(float(index_now))
             content_in_line = self.input_pad.get(f'{row_now}.0',f'{row_now}.end')
             
@@ -59,13 +61,13 @@ class prompt:
                 #インデントを次の行に入れる
                 indent = index // 4
 
+                if index_inline_now == index_now:
+                    if content_in_line[len(content_in_line)-1] == ":":
+                        indent += 1
 
-                if content_in_line[len(content_in_line)-1] == ":":
-                    indent += 1
-
-                if indent > 0 & index % 4 ==0:
-                    for i in range(indent):
-                        self.input_pad.insert('insert',"    ")            
+                    if indent > 0 & index % 4 ==0:
+                        for i in range(indent):
+                            self.input_pad.insert('insert',"    ")     
             return "break"
 
         #インデントを Tab で入れる
