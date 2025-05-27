@@ -1,7 +1,5 @@
 from libraries.caseVerificator import getCaseInput
 def run():
-    x = 4
-    if x == 5:
-        print(x)
-    else:
-        print(100000)
+    a = 3
+    if a == 3:
+        print("YES")

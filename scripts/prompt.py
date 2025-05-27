@@ -46,7 +46,7 @@ class prompt:
         def arrangeIndent(event):
             index_now = self.input_pad.index('insert')
             index_inline_now = self.input_pad.index('insert lineend')
-            print(index_now,index_inline_now)
+
             row_now = math.floor(float(index_now))
             content_in_line = self.input_pad.get(f'{row_now}.0',f'{row_now}.end')
             
