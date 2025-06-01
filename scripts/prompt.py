@@ -109,6 +109,7 @@ class prompt:
                 num_of_input += 1
             prog[i] = "    " + prog[i]
         prog = ["from libraries.caseVerificator import getCaseInput\ndef run():\n"]+prog
+        print(prog)
         debugger = codeDebugger
         result = debugger.debug(prog=prog)
         return(result)

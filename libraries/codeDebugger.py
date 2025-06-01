@@ -3,10 +3,10 @@ import importlib
 
 class codeDebugger:
     def debug(prog):
-        makedebugFile = open("debugFile.py","w")
+        makedebugFile = open("debugFile.py","w",encoding='utf-8')
         makedebugFile.writelines(prog)
         makedebugFile.close()
-        sys.stdout = open("debugDirectory.txt","w")
+        sys.stdout = open("debugDirectory.txt","w",encoding='utf-8')
         try: #引数に実行するプログラムを文字列で入力
             debugProg = importlib.import_module("debugFile")
             importlib.reload(debugProg)
@@ -193,4 +193,4 @@ class codeDebugger:
         finally:
             sys.stdout.close()
             sys.stdout = sys.__stdout__
-            return(open("debugDirectory.txt","r").read())
+            return(open("debugDirectory.txt","r",encoding='utf8').read())
