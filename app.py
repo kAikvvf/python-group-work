@@ -1,6 +1,6 @@
 from tkinter import *
 from scripts.prompt import editor
-from data import questDataExtracter
+from scripts import questDataExtracter
 
 root = Tk()
 root.title("Python-Techful")

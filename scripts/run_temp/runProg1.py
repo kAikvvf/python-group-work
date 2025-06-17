@@ -9,6 +9,7 @@ def generateResult():
         y = int(inputMode(5,"かけられる数"))
         print(x*y)
         
+        
     except Exception as e:
         print(e)
     finally:

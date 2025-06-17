@@ -1,7 +1,7 @@
 from tkinter import *
 import importlib
 import math
-import data.questDataExtracter as dataExtracter
+import scripts.questDataExtracter as dataExtracter
 
 class editor:
     def __init__(self,master,question_index): #プログラム番号で呼び出し。インデックスではない。
@@ -76,14 +76,15 @@ class editor:
 
     def debug(self,case_index):
         sample_case = dataExtracter.sampleCase(quest_index=self.prog_index,case_index=case_index)
-        prog = self.type_area.get("1.0","end").splitlines("\n")
+        prog = self.type_area.get('1.0','end').split('\n')
+
         num_of_input = 0
         for i in range(len(prog)):
             if "input(" in prog[i]:
                 inputed_data = sample_case[1][num_of_input]
                 prog[i] = prog[i].replace("input(",f"inputMode({inputed_data},")
                 num_of_input += 1
-            prog[i] = "        " + prog[i]
+            prog[i] = "        " + prog[i]+'\n'
         prog = ["def inputMode(inputed_data,message):\n    print(message,inputed_data)\n    return(inputed_data)\ndef generateResult():\n    import sys\n    sys.stdout = open('scripts/debugTerminal.txt','w',encoding='utf-8')\n    try:\n"]+prog+["    except Exception as e:\n        print(e)\n    finally:\n        sys.stdout.close()\n        sys.stdout = sys.__stdout__\n        with open('scripts/debugTerminal.txt','r',encoding='utf-8') as terminal_file:\n            return(terminal_file.read())"]
 
         with open(f"scripts/run_temp/runProg{case_index}.py",'w',encoding="utf-8") as runFile:
@@ -109,13 +110,3 @@ class editor:
 
     def hide(self):
         self.editor_frame.place_forget()
-
-root = Tk()
-root.title("prompt-test")
-root.geometry("800x500")
-editor1 = editor(root,1)
-
-quest_statement = Label(master=root,text=dataExtracter.questStatement(quest_index=1))
-quest_statement.pack(side="left")
-
-root.mainloop()
