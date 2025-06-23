@@ -1,22 +1,22 @@
 from tkinter import *
 import importlib
 import math
-import scripts.questDataExtracter as dataExtracter
+import questDataExtracter as dataExtracter
+import sys
 
 class editor:
     def __init__(self,master,question_index): #プログラム番号で呼び出し。インデックスではない。
         self.root = master
         self.prog_index = question_index
-        self.result = {'result':'null','matches':'null'} #結果を格納
 
         #Tkinter の設定
         self.editor_frame = Canvas(master=self.root)
         self.type_area = Text(master=self.editor_frame,background="#4A4A4A",foreground="#9EFFFF",font=("Source Han Code JP",11,"bold"))
         self.editor_frame.place(relheight=1.0,relwidth=0.5,relx=0.5,rely=0.0)
         button_area = Frame(master=self.editor_frame)
-        sample_debug_button = Button(master=button_area,text="サンプル実行",command=self.sampleDebug)
-        sample_debug_button.grid(column=0,row=0)
-        scoring_button = Button(master=button_area,text="採点",command=self.scoreing)
+        self.sample_debug_button = Button(master=button_area,text="サンプル実行")
+        self.sample_debug_button.grid(column=0,row=0)
+        scoring_button = Button(master=button_area,text="採点")
         scoring_button.grid(column=1,row=0)
         button_area.pack(side=BOTTOM)
         self.type_area.pack(fill='both',expand=1)
@@ -66,10 +66,9 @@ class editor:
         self.type_area.bind('<Shift-Tab>',shiftTabKey)
 
     def sampleDebug(self):
+        self.entire_result = []
         for i in range(int(dataExtracter.numberOfCases(quest_index=self.prog_index))):
-            print(f"sample {i}\n")
             self.debug(i)
-            print(self.result)
 
     def scoreing(self):
         print("scoring",self.debug(0))
@@ -84,25 +83,62 @@ class editor:
                 inputed_data = sample_case[1][num_of_input]
                 prog[i] = prog[i].replace("input(",f"inputMode({inputed_data},")
                 num_of_input += 1
-            prog[i] = "        " + prog[i]+'\n'
-        prog = ["def inputMode(inputed_data,message):\n    print(message,inputed_data)\n    return(inputed_data)\ndef generateResult():\n    import sys\n    sys.stdout = open('scripts/debugTerminal.txt','w',encoding='utf-8')\n    try:\n"]+prog+["    except Exception as e:\n        print(e)\n    finally:\n        sys.stdout.close()\n        sys.stdout = sys.__stdout__\n        with open('scripts/debugTerminal.txt','r',encoding='utf-8') as terminal_file:\n            return(terminal_file.read())"]
+            prog[i] = "    " + prog[i]+'\n'
+        prog = ["def inputMode(inputed_data,message):\n    print(message,inputed_data)\n    return(inputed_data)\ndef generateResult():\n"]+prog
 
         with open(f"scripts/run_temp/runProg{case_index}.py",'w',encoding="utf-8") as runFile:
             runFile.write("".join(prog))
         runFile.close()
         
         #実行ファイルをインポートして実行
-        runProg = importlib.import_module(f"scripts.run_temp.runProg{case_index}")
-        importlib.reload(runProg)
-        self.debugResult = runProg.generateResult()
+        sys.stdout = open("scripts/debugTerminal.txt",'w',encoding='utf-8')
+        self.error = ''
+        try:
+            runProg = importlib.import_module(f"run_temp.runProg{case_index}")
+            importlib.reload(runProg)
+            runProg.generateResult()       
+        except ModuleNotFoundError as error:
+            self.error = f"ModuleNotFoundError : {error}"
+        except IndexError as error:
+            self.error = f"IndexError : {error}"
+        except SyntaxError as error:
+            self.error = f"SyntaxError : {error}"
+        except IndentationError as error:
+            self.error = f"IndentationError : {error}"
+        except TypeError as error:
+            self.error = f"TypeError : {error}"
+        except UnicodeError as error:
+            self.error = f"UnicodeError : {error}"
+        except ZeroDivisionError as error:
+            self.error = f"ZeroDivisionError : {error}"
+        except FileNotFoundError as error:
+            self.error = f"FileNotFoundError : {error}"
+        except SyntaxWarning as warning:
+            self.error = f"SyntaxWarning : {warning}"        
+        except ImportWarning as warning:
+            self.error = f"ImportWarning : {warning}"
+        except UnicodeWarning as warning:
+            self.error = f"UnicodeWarning : {warning}"
+        except EncodingWarning as warning:
+            self.error = f"EndcodingWarning : {warning}"
+        except Exception as error:
+            self.error = f"unexpectedError:{error}"
+        finally:
+            if not self.error == '':
+                print(self.error)
+            sys.stdout.close()
+            sys.stdout = sys.__stdout__    
+        with open("scripts/debugTerminal.txt",'r',encoding='utf-8') as read_data:
+                self.debugResult = read_data.read()
+                #print(self.debugResult)
 
         correct_answer = dataExtracter.sampleCase(quest_index=self.prog_index,case_index=case_index)[2]
         if self.debugResult == correct_answer:
             self.matches = True
         else:
             self.matches = False
-        self.result['result'] = self.debugResult
-        self.result['matches'] = self.matches
+        
+        self.entire_result.append({'result':self.debugResult,'matches':self.matches})
 
 
     def show(self):
