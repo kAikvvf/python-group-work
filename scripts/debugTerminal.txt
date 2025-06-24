@@ -1,3 +1,1 @@
-かける数 3
-かけられる数 6
-18
+SyntaxError : expected an indented block after function definition on line 4 (runProg2.py, line 7)

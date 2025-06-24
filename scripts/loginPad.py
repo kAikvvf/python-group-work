@@ -10,15 +10,15 @@ class loginPad:
             self.user_data = user_data.read().split(".")
             for i in range(len(self.user_data)):
                 self.user_data[i] = self.user_data[i].split(",")
-        Label(master=self.root,text="ユーザー名とパスワードを入力してください",font=11).grid(column=0,row=0,columnspan=2)
-        Label(master=self.root,text="ユーザー名").grid(row=1,column=0)
+        Label(master=self.root,text="ユーザー名とパスワードを入力してください").grid(column=0,row=0,columnspan=2,padx=3)
+        Label(master=self.root,text="ユーザー名",padx=3).grid(row=1,column=0)
         self.USERNAME_INPUT = Entry(master=self.root,width=30)
-        self.USERNAME_INPUT.grid(row=1,column=1)
-        Label(master=self.root,text="パスワード").grid(row=2,column=0)
+        self.USERNAME_INPUT.grid(row=1,column=1,padx=5,pady=3)
+        Label(master=self.root,text="パスワード",padx=3).grid(row=2,column=0)
         self.PASSWORD_INPUT = Entry(master=self.root,width=30)
-        self.PASSWORD_INPUT.grid(row=2,column=1)
-        Button(master=self.root,text="ログイン",command=self.verificateUser).grid(row=3,column=1)
-        Button(master=self.root,text="新規",command=self.newUser).grid(row=3,column=0)
+        self.PASSWORD_INPUT.grid(row=2,column=1,padx=5,pady=3)
+        Button(master=self.root,text="ログイン",command=self.verificateUser).grid(row=3,column=1,padx=5,pady=5)
+        Button(master=self.root,text="新規",command=self.newUser).grid(row=3,column=0,padx=5,pady=5)
 
         self.root.mainloop()
     #ユーザーを照合
@@ -26,7 +26,7 @@ class loginPad:
         username = self.USERNAME_INPUT.get()
         password = self.PASSWORD_INPUT.get()
         if [username,password] in self.user_data:
-            self.successLogin()
+            self.successLogin(username)
         else:
             self.failLogin()
 
@@ -44,12 +44,18 @@ class loginPad:
             for i in range(len(self.user_data)):
                 current_username = self.user_data[i][0]
                 username_list.append(current_username)
+            password_list = []
+            for i in range(len(self.user_data)):
+                current_password = self.user_data[i][1]
+                password_list.append(current_password)
 
             if len(new_password) <8:
                 messagebox.showwarning("エラー","パスワードは8桁以上にしてください。")
     
             elif new_username in username_list:
                 messagebox.showwarning("エラー","入力したユーザー名は既に使われています。")
+            elif new_password in password_list:
+                messagebox.showwarning("エラー","入力したパスワードは既に使われています。")
             else:
                 if messagebox.askokcancel("確認",f"ユーザー名とパスワードがあっているか確認してください。\nユーザー名：{new_username}\nパスワード：{new_password}") == True:
                     with open("data/.user-list.txt","a") as append_directory:
@@ -68,12 +74,12 @@ class loginPad:
         new_user_win.mainloop()
 
     #ログイン成功時の処理
-    def successLogin(self):
+    def successLogin(self,username):
         print("yes")
+        print(username)
         self.root.destroy()
 
     #ログイン失敗時の処理
     def failLogin(self):
         print("no")
-
-login1 = loginPad()
+        messagebox.showerror("ログインエラー","ログインできません。\nユーザーまたはパスワードが間違えています。\n未登録の場合は ユーザー を新規作成して下さ。")

@@ -1,7 +1,7 @@
 from tkinter import *
 import importlib
 import math
-import questDataExtracter as dataExtracter
+from scripts import questDataExtracter as dataExtracter
 import sys
 
 class editor:
@@ -15,11 +15,11 @@ class editor:
         self.editor_frame.place(relheight=1.0,relwidth=0.5,relx=0.5,rely=0.0)
         button_area = Frame(master=self.editor_frame)
         self.sample_debug_button = Button(master=button_area,text="サンプル実行")
-        self.sample_debug_button.grid(column=0,row=0)
+        self.sample_debug_button.grid(column=0,row=0,padx=5,pady=5)
         scoring_button = Button(master=button_area,text="採点")
-        scoring_button.grid(column=1,row=0)
+        scoring_button.grid(column=1,row=0,padx=5,pady=5)
         button_area.pack(side=BOTTOM)
-        self.type_area.pack(fill='both',expand=1)
+        self.type_area.pack(fill='both',expand=1,padx=3)
 
         #インデントをそろえる
         def arrangeIndent(event):
