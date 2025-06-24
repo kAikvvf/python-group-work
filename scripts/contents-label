@@ -1,0 +1,88 @@
+import tkinter as tk
+from list import List
+
+class Contents:
+    def __init__(self,root):
+        self.root = root
+        self.screen = List(self.root)
+        self.desplay_label()
+
+
+    def desplay_label(self):
+        self.title_label = tk.Label(self.root,text="コンテンツ",bg="white")
+        self.screen.canvas.create_window(85,80,window=self.title_label) 
+
+        self.title_label.bind("<Button-1>",self.label_touch)       
+
+        self.canvas_back = tk.Canvas(self.root,bg="whitesmoke",width = 600,height = 900)
+        self.screen.canvas.create_window(280,550,window=self.canvas_back)
+
+        self.question_label1()
+        self.question_label2()
+        self.question_label3()
+
+    def label_touch(self,event):
+        self.title_label["background"] = "white"
+
+
+
+    def question_label1(self):
+        self.label1 = tk.Label(self.root,
+                                text="1,question\n \n目標回答時間：　分　　トピック：",
+                                bg="white",
+                                anchor=tk.W,
+                                width=70)
+        self.screen.canvas.create_window(300,200,window=self.label1)
+        
+        self.label1.bind("<Motion>",self.mouse_on1)
+        self.label1.bind("<Leave>",self.mouse_leave1)
+
+    def mouse_on1(self,event):
+        self.label1["background"] = "slategray1"
+
+    def mouse_leave1(self,event):
+        self.label1["background"] = "white"
+
+
+
+    def question_label2(self):
+        self.label2 = tk.Label(self.root,
+                                text="2,question\n \n目標回答時間：　分　　トピック：",
+                                bg="white",
+                                anchor=tk.W,
+                                width=70)
+        self.screen.canvas.create_window(300,300,window=self.label2)
+        
+        self.label2.bind("<Motion>",self.mouse_on2)
+        self.label2.bind("<Leave>",self.mouse_leave2)
+
+    def mouse_on2(self,event):
+        self.label2["background"] = "slategray1"
+
+    def mouse_leave2(self,event):
+        self.label2["background"] = "white"
+
+
+
+    def question_label3(self):
+        self.label3 = tk.Label(self.root,
+                                text="3,question\n \n目標回答時間：　分　　トピック：",
+                                bg="white",
+                                anchor=tk.W,
+                                width=70)
+        self.screen.canvas.create_window(300,400,window=self.label3)
+        
+        self.label3.bind("<Motion>",self.mouse_on3)
+        self.label3.bind("<Leave>",self.mouse_leave3)
+
+    def mouse_on3(self,event):
+        self.label3["background"] = "slategray1"
+
+    def mouse_leave3(self,event):
+        self.label3["background"] = "white"
+
+
+
+root = tk.Tk()
+Contents(root)
+root.mainloop()
