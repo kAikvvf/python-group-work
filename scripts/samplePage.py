@@ -1,5 +1,5 @@
 from tkinter import *
-import questDataExtracter as questDataExtracter
+from scripts import questDataExtracter as questDataExtracter
 
 class singleDisplay:
     def __init__(self,master,quest_index,sample_index,result:int):
@@ -8,7 +8,6 @@ class singleDisplay:
         self.quest_index = quest_index
 
         sample_case = questDataExtracter.sampleCase(quest_index=self.quest_index,case_index=sample_index)
-        #print(sample_case)
 
         label_height = 20
         Label(master=self.root,text="サンプルケース",borderwidth=1,relief="solid").place(height=label_height,relwidth=1/3,relx=0.0)
@@ -57,6 +56,7 @@ class singleDisplay:
 class sampleDisplay:
     def __init__(self,master,quest_index,result):
         self.canvas = Canvas(master=master)
+        self.canvas.pack(fill="both",expand=1)
         self.frame = Frame(master=self.canvas)
         self.result = result
 
@@ -71,11 +71,11 @@ class sampleDisplay:
         canvas_scrollbar.configure(command=self.canvas.yview)
         canvas_scrollbar.pack(anchor="e",fill="y",expand=1)
 
-        self.canvas.pack(fill="both",expand=1)
         
         def getWindowWidth(e):
             window_width = int(self.canvas.winfo_width())-20
             self.canvas.itemconfig(view_window,width=window_width)
+            self.canvas.config(height=window_width-30)
         
         self.canvas.bind("<Configure>",getWindowWidth)
 
