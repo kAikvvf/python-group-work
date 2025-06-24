@@ -1,6 +1,11 @@
 # python-group-work
 Git repository for python application group work in class.
 
+# 使い方
+① app.py を実行するとログイン画面が開く。
+② ログインする。この時、ユーザー登録をしていない場合は新規登録する。
+③ ログインできたら、問題リストが表示されるので問題を選択して解く。
+
 # 問題データのプロトコル
 - 行のインデックスが問題番号に一致
 - 行の情報は次の情報にする。
