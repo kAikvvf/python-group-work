@@ -1,5 +1,8 @@
 from tkinter import *
 from tkinter import messagebox
+import csv
+from scripts import questDataExtracter
+from scripts import main
 
 class loginPad:
     def __init__(self):
@@ -60,6 +63,13 @@ class loginPad:
                 if messagebox.askokcancel("確認",f"ユーザー名とパスワードがあっているか確認してください。\nユーザー名：{new_username}\nパスワード：{new_password}") == True:
                     with open("data/.user-list.txt","a") as append_directory:
                         append_directory.write(f".{new_username},{new_password}")
+                    with open(f'data/.{new_username}.csv','w',encoding='utf-8') as new_user_data_file:
+                        writer = csv.DictWriter(new_user_data_file,['quest_index','status','score','start_time','end_time'])
+                        writer.writeheader()
+                        empty_data = []
+                        for i in range(len(questDataExtracter.entireData())):
+                            empty_data.append({'quest_index':i,'status':False,'score':0,'start_time':'null','end_time':'null'})
+                        writer.writerows(empty_data)
                     new_user_win.destroy()
                     self.__init__()
         Label(master=new_user_win,text="ユーザーを新規作成").grid(row=0,column=0,columnspan=2)
@@ -75,9 +85,9 @@ class loginPad:
 
     #ログイン成功時の処理
     def successLogin(self,username):
-        print("yes")
-        print(username)
         self.root.destroy()
+        main.main(username)
+        self.__init__()
 
     #ログイン失敗時の処理
     def failLogin(self):

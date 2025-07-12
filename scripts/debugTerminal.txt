@@ -1,1 +1,3 @@
-SyntaxError : expected an indented block after function definition on line 4 (runProg2.py, line 7)
+ 3
+ 6
+18
