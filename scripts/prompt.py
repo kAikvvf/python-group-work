@@ -94,7 +94,7 @@ class editor:
         sys.stdout = open("scripts/debugTerminal.txt",'w',encoding='utf-8')
         self.error = ''
         try:
-            runProg = importlib.import_module(f"run_temp.runProg{case_index}")
+            runProg = importlib.import_module(f"scripts.run_temp.runProg{case_index}")
             importlib.reload(runProg)
             runProg.generateResult()       
         except ModuleNotFoundError as error:
