@@ -1,4 +1,8 @@
-quest_index,status,score,start_time,end_time
-0,False,0,null,null
-1,False,0,null,null
-2,False,0,null,null
+quest_index,status,score,start_time,end_time,number_of_confirm,prog_status
+
+0,False,0,2025.7.13.21.36.28,2025.7.13.21.40.20,0,
+
+1,False,0,null,null,0,
+
+2,False,0,null,null,0,
+
