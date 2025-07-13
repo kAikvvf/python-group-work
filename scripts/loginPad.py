@@ -64,11 +64,11 @@ class loginPad:
                     with open("data/.user-list.txt","a") as append_directory:
                         append_directory.write(f".{new_username},{new_password}")
                     with open(f'data/.{new_username}.csv','w',encoding='utf-8') as new_user_data_file:
-                        writer = csv.DictWriter(new_user_data_file,['quest_index','status','score','start_time','end_time'])
+                        writer = csv.DictWriter(new_user_data_file,['quest_index','status','score','start_time','end_time','number_of_confirm','prog_status'])
                         writer.writeheader()
                         empty_data = []
                         for i in range(len(questDataExtracter.entireData())):
-                            empty_data.append({'quest_index':i,'status':False,'score':0,'start_time':'null','end_time':'null'})
+                            empty_data.append({'quest_index':i,'status':False,'score':0,'start_time':'null','end_time':'null','number_of_confirm':0,'prog_status':''})
                         writer.writerows(empty_data)
                     new_user_win.destroy()
                     self.__init__()
@@ -93,3 +93,5 @@ class loginPad:
     def failLogin(self):
         print("no")
         messagebox.showerror("ログインエラー","ログインできません。\nユーザーまたはパスワードが間違えています。\n未登録の場合は ユーザー を新規作成して下さ。")
+
+loginPad()
