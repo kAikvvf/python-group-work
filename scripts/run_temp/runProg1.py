@@ -3,5 +3,5 @@ def inputMode(inputed_data,*message):
         print(message[0])
     return(inputed_data)
 def generateResult():
-    print(inputMode(21,'好きな整数を入力してください。'))
+    print(inputMode(28,'好きな整数を入力してください。'))
     
