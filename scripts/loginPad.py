@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 import csv
-from scripts import questDataExtracter
+from scripts import questDataHandler
 from scripts import main
 
 class loginPad:
@@ -67,7 +67,7 @@ class loginPad:
                         writer = csv.DictWriter(new_user_data_file,['quest_index','status','score','start_time','end_time','number_of_confirm','prog_status'])
                         writer.writeheader()
                         empty_data = []
-                        for i in range(len(questDataExtracter.entireData())):
+                        for i in range(len(questDataHandler.getCSVFile())):
                             empty_data.append({'quest_index':i,'status':False,'score':0,'start_time':'null','end_time':'null','number_of_confirm':0,'prog_status':''})
                         writer.writerows(empty_data)
                     new_user_win.destroy()

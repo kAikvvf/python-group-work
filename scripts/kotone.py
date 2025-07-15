@@ -1,7 +1,7 @@
 from tkinter import *
 from scripts.prompt import editor
 from scripts.samplePage import sampleDisplay
-from scripts import questDataExtracter
+from scripts import questDataHandler
 
 class Question:
     def __init__(self,master,question_index):
@@ -38,7 +38,7 @@ class Question:
                                font=("メイリオ", 12), 
                                wrap="word", 
                                xscrollcommand=self.y_scroll.set)
-        self.textbox.insert('1.0', questDataExtracter.questStatement(self.question_index))
+        self.textbox.insert('1.0', questDataHandler.getQuestStatement(question_index))
         self.textbox.config(state="disabled")
         self.textbox.pack(side="left", fill="y", expand=True)
         self.textbox.pack()

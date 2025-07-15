@@ -11,7 +11,7 @@ def main(USERNAME): #引数にユーザー名を入力
     root = Tk()
     root.title(f"Python Techful  -{USERNAME}-")
     root.geometry('800x600')
-    Question(root,1)
+    Question(root,0)
 
     def onClosingWindow():
         if messagebox.askokcancel(title='終了',message='本当に終了しますか？') == True:

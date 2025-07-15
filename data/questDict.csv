@@ -1,3 +1,4 @@
 title,quest_statement,estimated_required_time,sample_case,correct_answer
 
-標準出力 1,'好きな整数を入力してください。' と標準入力で聞き、取得した値をそのまま標準出力しなさい。\n,5,"[['6'], ['28'], ['126'], ['971292']]","['好きな整数を入力してください。\n6\n', '好きな整数を入力してください。\n28\n', '好きな整数を入力してください。\n126\n', '好きな整数を入力してください。\n971292\n']"
+標準出力,'好きな整数を入力してください。' と標準出力で聞き、取得した値をそのまま出力しなさい。\n,5,2<sample_separator>34<sample_separator>861<sample_separator>12718,好きな整数を入力してください。\n2\n<answer_separator>好きな整数を入力してください。\n34\n<answer_separator>好きな整数を入力してください。\n861\n<answer_separator>好きな整数を入力してください。\n12718\n
+

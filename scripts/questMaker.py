@@ -336,13 +336,20 @@ def confirmQuest():
             for i in reader:
                 quest_data.append(i)
         
-        data = {'title':str(title),'quest_statement':str(quest_statement).replace('\n','\\n'),'estimated_required_time':str(estimated_required_time),'sample_case':str(sample_case),'correct_answer':str(debug_result)}
+        sample_case_joined = []
+        for i in range(len(sample_case)):
+             sample_case_joined.append('<case_separator>'.join(sample_case[i]))
+        sample_case_string = '<sample_separator>'.join(sample_case_joined)
+
+        for i in range(len(debug_result)):
+            debug_result[i] = debug_result[i].replace('\n','\\n')
+        correcr_answer_string = '<answer_separator>'.join(debug_result)
+        data = {'title':str(title),'quest_statement':str(quest_statement).replace('\n','\\n'),'estimated_required_time':str(estimated_required_time),'sample_case':str(sample_case_string),'correct_answer':str(correcr_answer_string)}
         with open('data/questDict.csv','a',encoding='utf-8') as data_dict_file_to_write:
             writer = csv.DictWriter(data_dict_file_to_write,fieldnames=field_names)
             writer.writeheader
             writer.writerow(data)
         clear()
         
-
 use_editor.write_button.config(command=confirmQuest)
 root.mainloop()
