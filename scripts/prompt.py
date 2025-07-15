@@ -1,8 +1,8 @@
 from tkinter import *
 import importlib
 import math
-from scripts import questDataExtracter as dataExtracter
 import sys
+from scripts import questDataHandler
 
 class editor:
     def __init__(self,master,question_index): #プログラム番号で呼び出し。インデックスではない。
@@ -67,20 +67,20 @@ class editor:
 
     def sampleDebug(self):
         self.entire_result = []
-        for i in range(int(dataExtracter.numberOfCases(quest_index=self.prog_index))):
+        for i in range(len(questDataHandler.getSampleCase(self.prog_index))):
             self.debug(i)
 
     def scoreing(self):
         print("scoring",self.debug(0))
 
     def debug(self,case_index):
-        sample_case = dataExtracter.sampleCase(quest_index=self.prog_index,case_index=case_index)
+        sample_case = questDataHandler.getSampleCase(self.prog_index)[case_index]
         prog = self.type_area.get('1.0','end').split('\n')
 
         num_of_input = 0
         for i in range(len(prog)):
             if "input(" in prog[i]:
-                inputed_data = sample_case[1][num_of_input]
+                inputed_data = questDataHandler.getSampleCase(self.prog_index)[case_index]
                 prog[i] = prog[i].replace("input(",f"inputMode({inputed_data},")
                 num_of_input += 1
             prog[i] = "    " + prog[i]+'\n'
@@ -132,7 +132,7 @@ class editor:
                 self.debugResult = read_data.read()
                 #print(self.debugResult)
 
-        correct_answer = dataExtracter.sampleCase(quest_index=self.prog_index,case_index=case_index)[2]
+        correct_answer = questDataHandler.getCorrectAnswer(self.prog_index)[case_index]
         if self.debugResult == correct_answer:
             self.matches = True
         else:

@@ -1,5 +1,5 @@
 from tkinter import *
-from scripts import questDataExtracter as questDataExtracter
+from scripts import questDataHandler
 
 class singleDisplay:
     def __init__(self,master,quest_index,sample_index,result:int):
@@ -7,7 +7,7 @@ class singleDisplay:
         self.root = Canvas(master=master,height=single_height)
         self.quest_index = quest_index
 
-        sample_case = questDataExtracter.sampleCase(quest_index=self.quest_index,case_index=sample_index)
+        sample_case = questDataHandler.getSampleCase(self.quest_index)[sample_index]
 
         label_height = 20
         Label(master=self.root,text="サンプルケース",borderwidth=1,relief="solid").place(height=label_height,relwidth=1/3,relx=0.0)
@@ -39,11 +39,9 @@ class singleDisplay:
         debug_result.place(relwidth=1/3,relx=2/3,y=label_height,height=single_height-label_height)
 
         #入力
-        sample_data = ''
-        for i in range(len(sample_case[1])):
-            sample_data = sample_data+sample_case[1][i]+'\n'
-        sample_area.insert("1.0",sample_data)
-        correct_answer.insert("1.0",sample_case[2])
+        
+        sample_area.insert("1.0",questDataHandler.getSampleCase(quest_index)[sample_index])
+        correct_answer.insert("1.0",questDataHandler.getCorrectAnswer(quest_index)[sample_index])
         debug_result.insert("1.0",result)
 
         #追加入力できなくする
@@ -63,7 +61,7 @@ class sampleDisplay:
         canvas_scrollbar = Scrollbar(master=self.canvas,command=self.canvas.yview,orient="vertical",cursor='arrow')
 
         self.quest_index = quest_index
-        num_of_cases = int(questDataExtracter.numberOfCases(quest_index=self.quest_index))
+        num_of_cases = int(len(questDataHandler.getSampleCase(quest_index)))
         self.canvas.configure(scrollregion=(0,0,0,140*num_of_cases+10))
 
         self.canvas.configure(yscrollcommand=canvas_scrollbar.set)
