@@ -5,39 +5,49 @@ class List:
         
         self.root = root
         self.root.title(" ")
-        self.root.geometry("600x400")
+        self.screen_width = self.root.winfo_screenwidth() -1000
+        self.screen_height = self.root.winfo_screenheight() - 300
+        self.root.geometry(f"{self.screen_width}x{self.screen_height}")
         
-        self.start_screen()
+        self.frame()
+
+        self.canvas = tk.Canvas(self.frame, bg="skyblue3")   
+        self.canvas.pack(fill=tk.BOTH,expand=True) 
+
+    
+
+        #self.scrollbar()
+        self.title()
+    
         
-    def start_screen(self):
-        self.canvas = tk.Canvas(self.root, bg="skyblue3")
-        self.canvas.place(x=0, y=0, width=600, height=400)
-
-        self.bar_y = tk.Scrollbar(self.canvas, orient=tk.VERTICAL)
-        self.bar_y.pack(side=tk.RIGHT, fill=tk.Y)
-        self.bar_y.config(command=self.canvas.yview)
-        self.canvas.config(yscrollcommand=self.bar_y.set)
-
-        self.canvas.config(scrollregion=(0, 0, 300, 900))  
-        self.canvas = tk.Canvas(self.root,bg="white")
-        self.frame = tk.Frame(self.canvas)
-
+    def scrollbar(self):
+        
         self.scrollbar = tk.Scrollbar(self.canvas,orient=tk.VERTICAL,command=self.canvas.yview)
 
-        self.button = tk.Button(self.frame,text="Hello")
-
-        self.canvas.configure(scrollregion=(0,0,900,900))
+        self.canvas.configure(scrollregion=(0,0,self.root.winfo_screenwidth(),2000))
         self.canvas.configure(yscrollcommand=self.scrollbar.set)
-
-        self.scrollbar.pack(side=tk.RIGHT,fill=tk.Y)
         self.canvas.pack(expand=True,fill=tk.BOTH)
-        self.button.pack(expand=1)
-
-        self.canvas.create_window((0,0),window=self.frame,anchor="nw",width=900,height=900)
-        
+        self.scrollbar.pack(side=tk.RIGHT,fill=tk.Y)
 
         
-        
-root = tk.Tk()
-game = list(root)
-root.mainloop()
+
+    def title(self):
+        #各メイン画面用のframeを作る
+        self.frame_title = tk.Frame(self.canvas,bg="skyblue3")
+        self.canvas.create_window((0,0),window=self.frame_title,anchor="nw")  
+
+        #３つのメイン画面切り替えのボタン配置
+        self.contents_b =tk.Button(self.frame_title,text="コンテンツ")
+        self.contents_b.pack(side="left",pady=50,padx=15)  
+
+        self.score_b = tk.Button(self.frame_title,text="解答状況")    
+        self.score_b.pack(side="left",padx=15)
+
+        self.code_b = tk.Button(self.frame_title,text="コード提出履歴")
+        self.code_b.pack(side="left",padx=15)
+
+
+    def frame(self):
+        self.frame = tk.Frame(self.root)
+        #self.frame.pack(side="left", fill="y")
+        self.frame.pack(fill=tk.BOTH,expand=True)    
