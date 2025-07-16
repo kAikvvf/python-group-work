@@ -1,0 +1,4 @@
+quest_index,status,score,start_time,end_time,number_of_confirm,prog_statement
+0,True,0,2025</>7</>17</>0</>35</>56,2025</>7</>17</>0</>37</>2,0,"print(input('好きな整数を入力してください。'))
+"
+1,False,0,null,null,0,
