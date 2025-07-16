@@ -26,14 +26,13 @@ def getSampleCase(quest_index):
 def getCorrectAnswer(quest_index):
     correct_answer_raw_string = getCSVFile()[quest_index+1]['correct_answer']
     correct_answer_raw_string = correct_answer_raw_string.replace('\\n','\n')
-    correct_answer_list = correct_answer_raw_string.split('<correct_answer_separator>')
+    correct_answer_list = correct_answer_raw_string.split('<answer_separator>')
     return(correct_answer_list)
 
-
+'''
 print(getTitle(0))
 print(getQuestStatement(0))
 print(getEstimatedRequredTime(0))
 print(getSampleCase(0))
 print(getCorrectAnswer(0))
-
-print(getSampleCase(0)[3])
+'''

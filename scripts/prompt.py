@@ -16,8 +16,8 @@ class editor:
         button_area = Frame(master=self.editor_frame)
         self.sample_debug_button = Button(master=button_area,text="サンプル実行")
         self.sample_debug_button.grid(column=0,row=0,padx=5,pady=5)
-        scoring_button = Button(master=button_area,text="採点")
-        scoring_button.grid(column=1,row=0,padx=5,pady=5)
+        self.scoring_button = Button(master=button_area,text="採点")
+        self.scoring_button.grid(column=1,row=0,padx=5,pady=5)
         button_area.pack(side=BOTTOM)
         self.type_area.pack(fill='both',expand=1,padx=3)
 
@@ -80,11 +80,11 @@ class editor:
         num_of_input = 0
         for i in range(len(prog)):
             if "input(" in prog[i]:
-                inputed_data = questDataHandler.getSampleCase(self.prog_index)[case_index]
+                inputed_data = questDataHandler.getSampleCase(self.prog_index)[case_index][num_of_input]
                 prog[i] = prog[i].replace("input(",f"inputMode({inputed_data},")
                 num_of_input += 1
             prog[i] = "    " + prog[i]+'\n'
-        prog = ["def inputMode(inputed_data,message):\n    print(message,inputed_data)\n    return(inputed_data)\ndef generateResult():\n"]+prog
+        prog = ["def inputMode(inputed_data,message):\n    print(message)\n    return(inputed_data)\ndef generateResult():\n"]+prog
 
         with open(f"scripts/run_temp/runProg{case_index}.py",'w',encoding="utf-8") as runFile:
             runFile.write("".join(prog))

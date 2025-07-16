@@ -2,12 +2,14 @@ from tkinter import *
 from scripts.prompt import editor
 from scripts.samplePage import sampleDisplay
 from scripts import questDataHandler
+from scripts.scoringPage import scoringDisplay
 
 class Question:
-    def __init__(self,master,question_index):
+    def __init__(self,master,question_index,username):
         self.root = Canvas(master=master)
         self.root.pack(fill="both",expand=1)
         self.question_index = question_index
+        self.username = username
 
         #タブ切り替えボタン
         self.tab = Frame(master=self.root)
@@ -45,28 +47,12 @@ class Question:
 
         #---サンプル タブ設定---
         self.sample_tab = Frame(master=self.tab)
-        self.sampleDisplay = sampleDisplay(master=self.sample_tab,quest_index=self.question_index,result=['','','','','','','','','',''])
+        self.sampleDisplay = sampleDisplay(master=self.sample_tab,quest_index=self.question_index,result=[{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'}])
 
         #---結果 タブ設定---
         self.result_tab = Frame(master=self.tab)
-        self.x_scroll = Scrollbar(self.result_tab, orient="horizontal")
-        self.y_scroll = Scrollbar(self.result_tab, orient="vertical")
-        self.x_scroll.pack(side="bottom", fill="x")
-        self.y_scroll.pack(side="right", fill="y")
-
-        self.textbox = Text(self.result_tab, 
-                               font=("メイリオ", 12), 
-                               wrap="none", 
-                               xscrollcommand=self.x_scroll.set, 
-                               yscrollcommand=self.y_scroll.set)
-        a = "結果\nここにCSVで書かれた文を入れたい。\nけど、やり方が分からない…。\nもっと頑張らなきゃ。"
-        self.textbox.insert('1.0', a)
-        self.textbox.config(state="disabled")
-        self.textbox.pack(side="left", fill="y", expand=True)
-        self.textbox.pack()
-        
-        self.x_scroll.config(command=self.textbox.xview)
-        self.y_scroll.config(command=self.textbox.yview)
+        self.score_display = scoringDisplay(self.result_tab,question_index,result=[{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'}],username=self.username)
+        self.editor.scoring_button.config(command=self.setScore)
         #------
 
         self.showQuestTab()
@@ -78,9 +64,21 @@ class Question:
         self.editor.sampleDebug()
         result = []
         for i in range(len(self.editor.entire_result)):
-            currnet_result = self.editor.entire_result[i]['result']
+            currnet_result = self.editor.entire_result[i]
             result.append(currnet_result)
+
         self.sampleDisplay = sampleDisplay(master=self.sample_tab,quest_index=self.question_index,result=result)
+
+    def setScore(self):
+        self.showResultTab()
+
+        self.editor.sampleDebug()
+        result = []
+        for i in range(len(self.editor.entire_result)):
+            currnet_result = self.editor.entire_result[i]
+            result.append(currnet_result)
+        self.score_display.config(result)
+        
 
     def showQuestTab(self):
         self.quest_tab_button.config(state='disabled')
