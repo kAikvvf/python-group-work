@@ -1,8 +1,8 @@
 from tkinter import *
 import importlib
 import math
-import questDataExtracter as dataExtracter
 import sys
+from scripts import questDataHandler
 
 class editor:
     def __init__(self,master,question_index): #プログラム番号で呼び出し。インデックスではない。
@@ -15,11 +15,11 @@ class editor:
         self.editor_frame.place(relheight=1.0,relwidth=0.5,relx=0.5,rely=0.0)
         button_area = Frame(master=self.editor_frame)
         self.sample_debug_button = Button(master=button_area,text="サンプル実行")
-        self.sample_debug_button.grid(column=0,row=0)
-        scoring_button = Button(master=button_area,text="採点")
-        scoring_button.grid(column=1,row=0)
+        self.sample_debug_button.grid(column=0,row=0,padx=5,pady=5)
+        self.scoring_button = Button(master=button_area,text="採点")
+        self.scoring_button.grid(column=1,row=0,padx=5,pady=5)
         button_area.pack(side=BOTTOM)
-        self.type_area.pack(fill='both',expand=1)
+        self.type_area.pack(fill='both',expand=1,padx=3)
 
         #インデントをそろえる
         def arrangeIndent(event):
@@ -67,24 +67,25 @@ class editor:
 
     def sampleDebug(self):
         self.entire_result = []
-        for i in range(int(dataExtracter.numberOfCases(quest_index=self.prog_index))):
+        for i in range(len(questDataHandler.getSampleCase(self.prog_index))):
             self.debug(i)
 
     def scoreing(self):
         print("scoring",self.debug(0))
 
     def debug(self,case_index):
-        sample_case = dataExtracter.sampleCase(quest_index=self.prog_index,case_index=case_index)
-        prog = self.type_area.get('1.0','end').split('\n')
+        sample_case = questDataHandler.getSampleCase(self.prog_index)[case_index]
+        self.prog = self.type_area.get('1.0','end')
+        prog = self.prog.split('\n')
 
         num_of_input = 0
         for i in range(len(prog)):
             if "input(" in prog[i]:
-                inputed_data = sample_case[1][num_of_input]
+                inputed_data = questDataHandler.getSampleCase(self.prog_index)[case_index][num_of_input]
                 prog[i] = prog[i].replace("input(",f"inputMode({inputed_data},")
                 num_of_input += 1
             prog[i] = "    " + prog[i]+'\n'
-        prog = ["def inputMode(inputed_data,message):\n    print(message,inputed_data)\n    return(inputed_data)\ndef generateResult():\n"]+prog
+        prog = ["def inputMode(inputed_data,message):\n    print(message)\n    return(inputed_data)\ndef generateResult():\n"]+prog
 
         with open(f"scripts/run_temp/runProg{case_index}.py",'w',encoding="utf-8") as runFile:
             runFile.write("".join(prog))
@@ -94,7 +95,7 @@ class editor:
         sys.stdout = open("scripts/debugTerminal.txt",'w',encoding='utf-8')
         self.error = ''
         try:
-            runProg = importlib.import_module(f"run_temp.runProg{case_index}")
+            runProg = importlib.import_module(f"scripts.run_temp.runProg{case_index}")
             importlib.reload(runProg)
             runProg.generateResult()       
         except ModuleNotFoundError as error:
@@ -132,7 +133,7 @@ class editor:
                 self.debugResult = read_data.read()
                 #print(self.debugResult)
 
-        correct_answer = dataExtracter.sampleCase(quest_index=self.prog_index,case_index=case_index)[2]
+        correct_answer = questDataHandler.getCorrectAnswer(self.prog_index)[case_index]
         if self.debugResult == correct_answer:
             self.matches = True
         else:

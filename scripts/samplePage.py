@@ -1,27 +1,34 @@
 from tkinter import *
-import questDataExtracter as questDataExtracter
+from scripts import questDataHandler
 
 class singleDisplay:
     def __init__(self,master,quest_index,sample_index,result:int):
         single_height = 130
         self.root = Canvas(master=master,height=single_height)
         self.quest_index = quest_index
+        matches = result['matches']
 
-        sample_case = questDataExtracter.sampleCase(quest_index=self.quest_index,case_index=sample_index)
-        #print(sample_case)
+        sample_case = questDataHandler.getSampleCase(self.quest_index)[sample_index]
 
         label_height = 20
-        Label(master=self.root,text="サンプルケース",borderwidth=1,relief="solid").place(height=label_height,relwidth=1/3,relx=0.0)
-        Label(master=self.root,text="正解",borderwidth=1,relief="solid").place(height=label_height,relwidth=1/3,relx=1/3)
-        Label(master=self.root,text="実行結果",borderwidth=1,relief="solid").place(height=label_height,relwidth=1/3,relx=2/3)
+        sample_label = Label(master=self.root,text="サンプルケース",borderwidth=1,relief="solid")
+        sample_label.place(height=label_height,relwidth=1/3,relx=0.0)
+        correct_answer_label = Label(master=self.root,text="正解",borderwidth=1,relief="solid")
+        correct_answer_label.place(height=label_height,relwidth=1/3,relx=1/3)
+        result_label = Label(master=self.root,text="実行結果",borderwidth=1,relief="solid")
+        result_label.place(height=label_height,relwidth=1/3,relx=2/3)
 
-        sample_area = Text(master=self.root)
-        correct_answer = Text(master=self.root)
-        debug_result = Text(master=self.root)
+        sample_area_frame = Frame(self.root)
+        correct_answer_frame = Frame(self.root)
+        debug_result_frame = Frame(self.root)
 
-        sample_area_scrollbar = Scrollbar(master=sample_area,command=sample_area.yview,orient="vertical",cursor='arrow')
-        correct_answer_scrollbar = Scrollbar(master=correct_answer,command=sample_area.yview,orient="vertical",cursor='arrow')
-        debug_result_scrollbar = Scrollbar(master=debug_result,command=sample_area.yview,orient="vertical",cursor='arrow')
+        sample_area = Text(master=sample_area_frame)
+        correct_answer = Text(master=correct_answer_frame)
+        debug_result = Text(master=debug_result_frame)
+
+        sample_area_scrollbar = Scrollbar(master=sample_area_frame,command=sample_area.yview,orient="vertical",cursor='arrow')
+        correct_answer_scrollbar = Scrollbar(master=correct_answer_frame,command=sample_area.yview,orient="vertical",cursor='arrow')
+        debug_result_scrollbar = Scrollbar(master=debug_result_frame,command=sample_area.yview,orient="vertical",cursor='arrow')
         
         sample_area.configure(yscrollcommand=sample_area_scrollbar.set)
         correct_answer.configure(yscrollcommand=correct_answer_scrollbar.set)
@@ -31,21 +38,23 @@ class singleDisplay:
         correct_answer_scrollbar.configure(command=correct_answer.yview)
         debug_result_scrollbar.configure(command=debug_result.yview)
 
-        sample_area_scrollbar.pack(anchor="e",fill="y",expand=1)
-        correct_answer_scrollbar.pack(anchor="e",fill="y",expand=1)
-        debug_result_scrollbar.pack(anchor="e",fill="y",expand=1)
+        sample_area_scrollbar.pack(side="right",fill="y",expand=1)
+        correct_answer_scrollbar.pack(side="right",fill="y",expand=1)
+        debug_result_scrollbar.pack(side="right",fill="y",expand=1)
         
-        sample_area.place(relwidth=1/3,relx=0.0,y=label_height,height=single_height-label_height)
-        correct_answer.place(relwidth=1/3,relx=1/3,y=label_height,height=single_height-label_height)
-        debug_result.place(relwidth=1/3,relx=2/3,y=label_height,height=single_height-label_height)
+        sample_area.pack(side="left",fill="both",expand=True)
+        correct_answer.pack(side="left",fill="both",expand=True)
+        debug_result.pack(side="left",fill="both",expand=True)
+
+        sample_area_frame.place(relwidth=1/3,relx=0.0,y=label_height,height=single_height-label_height)
+        correct_answer_frame.place(relwidth=1/3,relx=1/3,y=label_height,height=single_height-label_height)
+        debug_result_frame.place(relwidth=1/3,relx=2/3,y=label_height,height=single_height-label_height)
 
         #入力
-        sample_data = ''
-        for i in range(len(sample_case[1])):
-            sample_data = sample_data+sample_case[1][i]+'\n'
-        sample_area.insert("1.0",sample_data)
-        correct_answer.insert("1.0",sample_case[2])
-        debug_result.insert("1.0",result)
+
+        sample_area.insert("1.0",questDataHandler.getSampleCase(quest_index)[sample_index])
+        correct_answer.insert("1.0",questDataHandler.getCorrectAnswer(quest_index)[sample_index])
+        debug_result.insert("1.0",result['result'])
 
         #追加入力できなくする
         sample_area.config(state="disabled")
@@ -54,16 +63,33 @@ class singleDisplay:
 
         self.root.pack(fill="x",expand=1,padx=10,pady=5)
 
+        if matches == True:
+            sample_area.config(background="#ABC6FF")
+            correct_answer.config(background="#ABC6FF")
+            debug_result.config(background="#ABC6FF")
+            sample_label.config(background="#529AFF")
+            correct_answer_label.config(background="#529AFF")
+            result_label.config(background="#529AFF")
+
+        elif matches == False:
+            sample_area.config(background="#FFABAB")
+            correct_answer.config(background="#FFABAB")
+            debug_result.config(background="#FFABAB")
+            sample_label.config(background="#FF5252")
+            correct_answer_label.config(background="#FF5252")
+            result_label.config(background="#FF5252")
+
 class sampleDisplay:
     def __init__(self,master,quest_index,result):
         self.canvas = Canvas(master=master)
+        self.canvas.pack(fill="both",expand=1)
         self.frame = Frame(master=self.canvas)
-        self.result = result
+        self.result = [result[i]['result'] for i in range(len(result))]
 
         canvas_scrollbar = Scrollbar(master=self.canvas,command=self.canvas.yview,orient="vertical",cursor='arrow')
 
         self.quest_index = quest_index
-        num_of_cases = int(questDataExtracter.numberOfCases(quest_index=self.quest_index))
+        num_of_cases = int(len(questDataHandler.getSampleCase(quest_index)))
         self.canvas.configure(scrollregion=(0,0,0,140*num_of_cases+10))
 
         self.canvas.configure(yscrollcommand=canvas_scrollbar.set)
@@ -71,11 +97,11 @@ class sampleDisplay:
         canvas_scrollbar.configure(command=self.canvas.yview)
         canvas_scrollbar.pack(anchor="e",fill="y",expand=1)
 
-        self.canvas.pack(fill="both",expand=1)
         
         def getWindowWidth(e):
             window_width = int(self.canvas.winfo_width())-20
             self.canvas.itemconfig(view_window,width=window_width)
+            self.canvas.config(height=window_width-30)
         
         self.canvas.bind("<Configure>",getWindowWidth)
 
