@@ -86,7 +86,7 @@ class editor:
         runFile.close()
         
         #実行ファイルをインポートして実行
-        sys.stdout = open("debugTerminal.txt",'w',encoding='utf-8')
+        sys.stdout = open("scripts/debugTerminal.txt",'w',encoding='utf-8')
         self.error = ''
         try:
             runProg = importlib.import_module(f"run_temp.runProg{case_index}")
