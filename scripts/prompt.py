@@ -75,7 +75,8 @@ class editor:
 
     def debug(self,case_index):
         sample_case = questDataHandler.getSampleCase(self.prog_index)[case_index]
-        prog = self.type_area.get('1.0','end').split('\n')
+        self.prog = self.type_area.get('1.0','end')
+        prog = self.prog.split('\n')
 
         num_of_input = 0
         for i in range(len(prog)):
