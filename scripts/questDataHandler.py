@@ -8,6 +8,9 @@ def getCSVFile():
         quest_list = [i for i in reader]
         return(quest_list)
 
+def getNumOfQuest():
+    return(len(getCSVFile())-1)
+
 def getTitle(quest_index):
     return(str(getCSVFile()[quest_index+1]['title']))
 

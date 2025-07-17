@@ -13,35 +13,35 @@ class userDataHandler:
                 self.user_data.append(i)
     
     def getQuestStatus(self,quest_index):
-        return(self.user_data[quest_index]['status'])
+        return(self.user_data[quest_index+1]['status'])
     
     def getScore(self,quest_index):
-        return(self.user_data[quest_index]['score'])
+        return(self.user_data[quest_index+1]['score'])
 
     def getNumOfConfirm(self,quest_index):
-        return(int(self.user_data[quest_index]['number_of_confirm']))
+        return(int(self.user_data[quest_index+1]['number_of_confirm']))
 
     def getStatus(self,quest_index):
-        return(self.user_data[quest_index]['status'])
+        return(self.user_data[quest_index+1]['status'])
     
     def getStartTime(self,quest_index):
-        if not self.user_data[quest_index]['start_time'] == 'null':
-            time_now = self.user_data[quest_index]['start_time'].split('</>')
+        if not self.user_data[quest_index+1]['start_time'] == 'null':
+            time_now = self.user_data[quest_index+1]['start_time'].split('</>')
             time_now = datetime.datetime(int(time_now[0]),int(time_now[1]),int(time_now[2]),int(time_now[3]),int(time_now[4]),int(time_now[5]))
             return(time_now)
         else:
             return('null')
 
     def getEndTime(self,quest_index):
-        if not self.user_data[quest_index]['end_time'] == 'null':
-            time_now = self.user_data[quest_index]['end_time'].split('</>')
+        if not self.user_data[quest_index+1]['end_time'] == 'null':
+            time_now = self.user_data[quest_index+1]['end_time'].split('</>')
             time_now = datetime.datetime(int(time_now[0]),int(time_now[1]),int(time_now[2]),int(time_now[3]),int(time_now[4]),int(time_now[5]))
             return(time_now)
         else:
             return('null')
     
     def getProgStatement(self,quest_index):
-        return(self.user_data[quest_index]['prog_statement'])
+        return(self.user_data[quest_index+1]['prog_statement'])
 
     def setStartTime(self,quest_index):
         time_now = datetime.datetime.now()
@@ -51,7 +51,7 @@ class userDataHandler:
         hour_now = time_now.hour
         minute_now = time_now.minute
         second_now = time_now.second
-        self.user_data[quest_index]['start_time'] = f'{year_now}</>{month_now}</>{day_now}</>{hour_now}</>{minute_now}</>{second_now}'
+        self.user_data[quest_index+1]['start_time'] = f'{year_now}</>{month_now}</>{day_now}</>{hour_now}</>{minute_now}</>{second_now}'
         self.rewrite()
     
     def setEndTime(self,quest_index):
@@ -63,20 +63,24 @@ class userDataHandler:
         minute_now = time_now.minute
         second_now = time_now.second
         time_now = f'{year_now}</>{month_now}</>{day_now}</>{hour_now}</>{minute_now}</>{second_now}'
-        self.user_data[quest_index]['end_time'] = time_now
+        self.user_data[quest_index+1]['end_time'] = time_now
         self.rewrite()
     
     def addNumOfConfirm(self,quest_index):
-        num_of_confirm_now = int(self.getNumberOfConfirm(quest_index))
-        self.user_data[quest_index]['number_of_confirm'] = num_of_confirm_now
+        num_of_confirm_now = int(self.getNumOfConfirm(quest_index))+1
+        self.user_data[quest_index+1]['number_of_confirm'] = num_of_confirm_now
         self.rewrite()
     
     def setStatus(self,quest_index,status:bool):
-        self.user_data[quest_index]['status'] = status
+        self.user_data[quest_index+1]['status'] = status
         self.rewrite()
     
     def setProgStatement(self,quest_index:int,prog_statement:bool):
-        self.user_data[quest_index]['prog_statement'] = prog_statement.replace('\n','\\n')
+        self.user_data[quest_index+1]['prog_statement'] = prog_statement.replace('\n','\\n')
+        self.rewrite()
+    
+    def setScore(self,quest_index,score):
+        self.user_data[quest_index+1]['score'] = score
         self.rewrite()
 
     def rewrite(self):

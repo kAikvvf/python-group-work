@@ -75,11 +75,11 @@ class editor:
         num_of_input = 0
         for i in range(len(prog)):
             if "input(" in prog[i]:
-                inputed_data = sample_case[case_index][num_of_input]
+                inputed_data = sample_case[case_index]
                 prog[i] = prog[i].replace("input(",f"inputMode({inputed_data},")
                 num_of_input += 1
             prog[i] = "    " + prog[i]+'\n'
-        prog = ["def inputMode(inputed_data,*message):\n    if not message == ():\n        print(message[0])\n    return(inputed_data)\ndef generateResult():\n"]+prog
+        prog = [f"sample_case = {inputed_data}\ndef inputMode(sample_index,*message):\n    if not message == ():\n        print(message[0])\n    return(sample_data[sample_index])\ndef generateResult():\n"]+prog
 
         with open(f"scripts/run_temp/runProg{case_index}.py",'w',encoding="utf-8") as runFile:
             runFile.write("".join(prog))
@@ -123,7 +123,7 @@ class editor:
                 print(self.error)
             sys.stdout.close()
             sys.stdout = sys.__stdout__    
-        with open("debugTerminal.txt",'r',encoding='utf-8') as read_data:
+        with open("scripts/debugTerminal.txt",'r',encoding='utf-8') as read_data:
                 self.debugResult = read_data.read()
                 #print(self.debugResult)
         
