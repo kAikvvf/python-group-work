@@ -11,7 +11,7 @@ class editor:
 
         #Tkinter の設定
         self.editor_frame = Canvas(master=self.root)
-        self.type_area = Text(master=self.editor_frame,background="#4A4A4A",foreground="#9EFFFF",font=("Source Han Code JP",11,"bold"))
+        self.type_area = Text(master=self.editor_frame,background="#4A4A4A",foreground="#9EFFFF",font=("Source Han Code JP",11,"bold"),wrap='none')
         self.editor_frame.place(relheight=1.0,relwidth=0.5,relx=0.5,rely=0.0)
         button_area = Frame(master=self.editor_frame)
         self.sample_debug_button = Button(master=button_area,text="サンプル実行")

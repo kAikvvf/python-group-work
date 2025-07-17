@@ -4,29 +4,28 @@ from scripts.userDataHanlder import userDataHandler
 import datetime
 
 class scoringDisplay:
-    def __init__(self,master,quest_index,result,username,prog):
+    def __init__(self,master,quest_index,result,username,prog,disable_button_prog):
         self.master = master
         self.root = Frame(master=master)
-        self.quest_index = quest_index+1
+        self.quest_index = quest_index
         self.result = [str(result[i]['matches']) for i in range(len(result))]
         self.username = username
 
         self.user_data_handeler = userDataHandler(self.username)
 
         self.user_data_handeler.setProgStatement(self.quest_index,prog)
+        self.user_data_handeler.addNumOfConfirm(self.quest_index)
 
         quest_start_time = self.user_data_handeler.getStartTime(self.quest_index)
-        self.user_data_handeler.setEndTime(self.quest_index)
+
+        if not self.user_data_handeler.getStatus(self.quest_index) == 'True':
+            self.user_data_handeler.setEndTime(self.quest_index)
         quest_end_time = self.user_data_handeler.getEndTime(self.quest_index)
 
         self.time_required = '-'
 
         if not quest_start_time == 'null' and not quest_start_time == 'null':
             self.time_required= quest_end_time - quest_start_time
-
-        buton_area = Frame(self.root)
-        self.return_home_button = Button(master=buton_area,text='問題選択に戻る')
-        self.next_quest_button = Button(master=buton_area,text='次の問題')
 
         Label(master=self.root,text='採点結果',font=11).pack()
         required_time_label = Label(master=self.root,text=f'所要時間：{self.time_required}')
@@ -56,15 +55,14 @@ class scoringDisplay:
             if score >= 25:
                 score = 25
             score_label = Label(master=score_list_frame,text=f'最終スコア：{score}',font=20)
+            self.user_data_handeler.setScore(self.quest_index,score)
             score_label.pack(pady=20)
             passed_label = Label(master=self.root,text='☆☆☆ 合格 ☆☆☆',highlightthickness=2,highlightbackground='black',fg="#000000",bg="#FF00EE",font=('arial',17,'bold'))
             passed_label.pack(fill='x',pady=5)
 
-            self.user_data_handeler.setStatus(self.quest_index,True)
+            disable_button_prog()
 
-            buton_area.pack()
-            self.return_home_button.grid(column=0,row=0,padx=5)
-            self.next_quest_button.grid(column=1,row=0,padx=5)
+            self.user_data_handeler.setStatus(self.quest_index,True)
 
         self.root.pack(fill='both',expand=True)
 

@@ -1,41 +1,64 @@
 import tkinter as tk
+import datetime
+from scripts import questDataHandler
+from scripts.userDataHanlder import userDataHandler
+from scripts.kotone import Question
 
 class Quest:
-    def __init__(self,canvas):
+    def __init__(self,master,username,quest_index,window_root,quest_list_page,answer_page):
 
-        self.canvas = canvas
-        self.label_list()
+        self.root = master
 
+        user_status_in_index = userDataHandler(username).getStatus(quest_index)
+        status = '未達成'
+        if user_status_in_index == 'True':
+            status = '合格'
+        self.quest_choose_button = tk.Button(self.root,
+                              text=f"{quest_index+1}, {questDataHandler.getTitle(quest_index)}    回答状況：{status}\n 目標回答時間：{questDataHandler.getEstimatedRequredTime(quest_index)} 分",
+                              bg="white",
+                              font=("メイリオ",12),
+                              relief='groove',
+                              justify="left",
+                              activebackground="#44BBFF",
+                              )
+        self.quest_choose_button.pack(padx=10,pady=5,fill='both',expand=True)
 
-    def frame_label(self):
-        self.frame = tk.Frame()
-        self.frame.pack()
+        self.quest_choose_button.bind("<Enter>",lambda e ,l=self.quest_choose_button:l.configure(bg="slategray1"))
+        self.quest_choose_button.bind("<Leave>",lambda e ,l=self.quest_choose_button:l.configure(bg="white"))
 
-    def label_list(self):
-        label_area = tk.Frame(master=self.canvas)
-        for i in range(1,11):
-            self.label = tk.Label(label_area,
-                                  text=f"{i},Question\n 目標回答時間：　分　　トピック ",
-                                  bg="white",
-                                  font=("メイリオ",12),
-                                  )
-            self.label.pack(padx=10,pady=5,fill='both',expand=True)
+        self.answering_page = ''
+        def start_answring():
+            self.answering_page = Question(answer_page,quest_index,username)
+            quest_list_page.forget()
+            answer_page.pack(fill='both',expand=True)
 
-            self.label.bind("<Enter>",lambda e ,l=self.label:l.configure(bg="slategray1"))
-            self.label.bind("<Leave>",lambda e ,l=self.label:l.configure(bg="white"))
+            def return_to_choose_page():
+                self.answering_page.hide()
+                answer_page.forget()
+                quest_list_page.pack(fill='both',expand=True)
 
-        self.canvas.create_window(0,0,window=label_area,anchor="nw")
+            self.answering_page.return_button.config(command=return_to_choose_page)
+
+        self.quest_choose_button.config(command=start_answring)
 
 
 class Contents:
-    def __init__(self,parent):
+    def __init__(self,parent,username,window_root,quest_list_page,answer_page):
         
         self.frame_contents = tk.Frame(parent)
 
-
         self.contents_canvas()
         
-        self.quest = Quest(self.cvs_contents)
+        self.contents_scroll = tk.Frame(self.cvs_contents)
+        quest_button_list = []
+        for i in range(questDataHandler.getNumOfQuest()):
+            self.quest = Quest(self.contents_scroll,username,i,window_root,quest_list_page,answer_page)
+            quest_button_list.append(self.quest)
+        self.contents_scroll.pack(fill="both",expand=True)
+
+        scroll_region = 80*questDataHandler.getNumOfQuest()
+        self.cvs_contents.create_window((0,0),window=self.contents_scroll,width=400,height=scroll_region,anchor='nw')
+        self.cvs_contents.configure(scrollregion=(0,0,0,scroll_region))
 
     def contents_canvas(self):
         self.scroll = tk.Scrollbar(self.frame_contents,orient=tk.VERTICAL)
@@ -44,7 +67,6 @@ class Contents:
         self.cvs_contents = tk.Canvas(self.frame_contents,bg="skyblue3",yscrollcommand=self.scroll.set)
         self.cvs_contents.pack(fill=tk.BOTH,expand=True)
 
-        self.cvs_contents.configure(scrollregion=(0,0,0,650))
         self.cvs_contents.configure(yscrollcommand=self.scroll.set)
         self.scroll.config(command=self.cvs_contents.yview)
 
@@ -76,8 +98,10 @@ class Score:
     
 
 class Code:
-    def __init__(self,parent):
+    def __init__(self,parent,username):
         self.frame_code = tk.Frame(parent)      
+
+        self.username = username
 
         self.code_canvas()
         self.chart()
@@ -94,37 +118,35 @@ class Code:
         self.scroll1.config(command=self.cvs_code.yview)
 
     def chart(self):
-        for i in range(1,11):
-            self.label2 = tk.Label(self.cvs_code,text=f"{i},所要時間",bg="white",font=("メイリオ",12))
+        for i in range(questDataHandler.getNumOfQuest()):
+            status = '未回答'
+            required_time = '-'
+            if userDataHandler(self.username).getStatus(i) == 'True':
+                required_time = userDataHandler(self.username).getEndTime(i) - userDataHandler(self.username).getStartTime(i)
+                status = f'合格済 (スコア：{userDataHandler(self.username).getScore(i)} , 所要時間：{required_time} , 提出日時：{userDataHandler(self.username).getEndTime(i)})'
+            elif userDataHandler(self.username).getStatus(i) == 'false' and not userDataHandler(self.username).getStartTime(i) == 'null':
+                status = '回答中'
+
+            self.label2 = tk.Label(self.cvs_code,text=f"{i+1}, ステータス：{status}",bg="white",font=("メイリオ",12))
             self.cvs_code.create_window(50,50*i,window=self.label2,anchor="nw")
 
     
     
 
 class Main:
-    def __init__(self,root):
+    def __init__(self,root,username,answe_page):
 
         self.root = root
-        root.title(" ")
-        screen_width = root.winfo_screenwidth() -1000
-        screen_height = root.winfo_screenheight() - 300
-        root.geometry(f"{screen_width}x{screen_height}")   
 
-
-        self.main_frame()
+        self.frame_main = root
         self.main_canvas()    
         self.button() 
 
-        self.contents = Contents(self.frame_main)
+        self.contents = Contents(self.frame_main,username,root,self.frame_main,answe_page)
         self.score = Score(self.frame_main)
-        self.code = Code(self.frame_main)
+        self.code = Code(self.frame_main,username)
 
         self.contents.frame_contents.pack(fill=tk.BOTH,expand=True)
-        
-
-    def main_frame(self):
-        self.frame_main = tk.Frame()
-        self.frame_main.pack(fill=tk.BOTH,expand=True)
 
     def main_canvas(self):
         self.cvs_main = tk.Canvas(self.frame_main,bg="white")
@@ -155,8 +177,3 @@ class Main:
         self.contents.frame_contents.pack_forget()
         self.score.frame_score.pack_forget()
         self.code.frame_code.pack(fill=tk.BOTH,expand=True)
-
-
-root = tk.Tk()
-Main(root)
-root.mainloop()

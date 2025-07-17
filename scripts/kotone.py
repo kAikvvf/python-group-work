@@ -14,8 +14,8 @@ class Question:
 
         self.user_data_handeler = userDataHandler(self.username)
 
-        if userDataHandler(self.username).getStartTime(self.question_index+1) == 'null':
-            self.user_data_handeler.setStartTime(self.question_index+1)
+        if userDataHandler(self.username).getStartTime(self.question_index) == 'null':
+            self.user_data_handeler.setStartTime(self.question_index)
 
         #タブ切り替えボタン
         self.tab = Frame(master=self.root)
@@ -57,12 +57,12 @@ class Question:
 
         #---結果 タブ設定---
         self.result_tab = Frame(master=self.tab)
-        self.score_display = scoringDisplay(self.result_tab,question_index,result=[{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'}],username=self.username,prog='')
-        if self.user_data_handeler.getStatus(self.question_index+1) == 'none':
-            self.score_display = scoringDisplay(self.result_tab,question_index,result=[{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'}],username=self.username,prog='')
+        self.score_display = scoringDisplay(self.result_tab,question_index,result=[{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'}],username=self.username,prog='',disable_button_prog=self.disable_buttons)
+        if self.user_data_handeler.getStatus(self.question_index) == 'none':
+            self.score_display = scoringDisplay(self.result_tab,question_index,result=[{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'}],username=self.username,prog='',disable_button_prog=self.disable_buttons)
             self.showQuestTab()
-        elif self.user_data_handeler.getStatus(self.question_index+1) == 'True':
-            self.editor.type_area.insert('1.0',self.user_data_handeler.getProgStatement(self.question_index+1).replace('\\n','\n'))
+        elif self.user_data_handeler.getStatus(self.question_index) == 'True':
+            self.editor.type_area.insert('1.0',self.user_data_handeler.getProgStatement(self.question_index).replace('\\n','\n'))
             self.setScore()
             self.debug()
             self.disable_buttons()
@@ -94,8 +94,8 @@ class Question:
             currnet_result = self.editor.entire_result[i]
             result.append(currnet_result)
         self.score_display.hide()
-        self.score_display = scoringDisplay(self.result_tab,self.question_index,result=result,username=self.username,prog=self.editor.prog)
-        if self.user_data_handeler.getStatus(self.question_index+1) == 'True':
+        self.score_display = scoringDisplay(self.result_tab,self.question_index,result=result,username=self.username,prog=self.editor.prog,disable_button_prog=self.disable_buttons)
+        if self.user_data_handeler.getStatus(self.question_index) == 'True':
             self.disable_buttons()
 
     def disable_buttons(self):
@@ -130,4 +130,4 @@ class Question:
         self.result_tab.pack(fill="both",expand=1)
     
     def hide(self):
-        self.root.forget()
+        self.root.destroy()
