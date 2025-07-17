@@ -23,7 +23,7 @@ def getEstimatedRequredTime(quest_index):
 def getSampleCase(quest_index):
     sample_case_list = getCSVFile()[quest_index+1]['sample_case'].split('<sample_separator>')
     for i in range(len(sample_case_list)):
-        sample_case_list[i] = sample_case_list[i].split('<case_separator')
+        sample_case_list[i] = sample_case_list[i].split('<case_separator>')
     return(sample_case_list)
 
 def getCorrectAnswer(quest_index):
