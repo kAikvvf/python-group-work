@@ -16,11 +16,11 @@ def main(USERNAME): #引数にユーザー名を入力
     quest_select_page = Frame(root)
     answer_page = Frame(root)
 
-    quest_list = Main(quest_select_page,USERNAME,answer_page)
+    quest_list = Main(quest_select_page,USERNAME,answer_page,root)
     quest_select_page.pack(fill='both',expand=True)
 
     def onClosingWindow():
-        if messagebox.askokcancel(title='終了',message='本当に終了しますか？') == True:
+        if messagebox.askokcancel(title='終了',message='本当に終了しますか？\n終了した場合、現在編集しているプログラムは保存されません。\n') == True:
             root.destroy()
     root.protocol("WM_DELETE_WINDOW", onClosingWindow)
     root.mainloop()

@@ -78,14 +78,11 @@ class editor:
         self.prog = self.type_area.get('1.0','end')
         prog = self.prog.split('\n')
 
-        num_of_input = 0
         for i in range(len(prog)):
             if "input(" in prog[i]:
-                inputed_data = questDataHandler.getSampleCase(self.prog_index)[case_index][num_of_input]
-                prog[i] = prog[i].replace("input(",f"inputMode({inputed_data},")
-                num_of_input += 1
-            prog[i] = "    " + prog[i]+'\n'
-        prog = ["def inputMode(inputed_data,message):\n    print(message)\n    return(inputed_data)\ndef generateResult():\n"]+prog
+                prog[i] = prog[i].replace("input(",f"self.inputMode(")
+            prog[i] = "        " + prog[i]+'\n'
+        prog = [f"class generateResult:\n    def __init__(self):\n        self.sample_data = {sample_case}\n        self.sample_index = 0\n"]+prog+["    def inputMode(self,*message):\n        if not message == ():\n            print(message[0])\n        self.sample_index += 1\n        return(self.sample_data[self.sample_index-1])"]
 
         with open(f"scripts/run_temp/runProg{case_index}.py",'w',encoding="utf-8") as runFile:
             runFile.write("".join(prog))

@@ -5,7 +5,7 @@ from scripts.userDataHanlder import userDataHandler
 from scripts.kotone import Question
 
 class Quest:
-    def __init__(self,master,username,quest_index,window_root,quest_list_page,answer_page):
+    def __init__(self,master,username,quest_index,window_root,quest_list_page,answer_page,reload_func):
 
         self.root = master
 
@@ -36,6 +36,7 @@ class Quest:
                 self.answering_page.hide()
                 answer_page.forget()
                 quest_list_page.pack(fill='both',expand=True)
+                reload_func()
 
             self.answering_page.return_button.config(command=return_to_choose_page)
 
@@ -43,7 +44,7 @@ class Quest:
 
 
 class Contents:
-    def __init__(self,parent,username,window_root,quest_list_page,answer_page):
+    def __init__(self,parent,username,window_root,quest_list_page,answer_page,reload_func):
         
         self.frame_contents = tk.Frame(parent)
 
@@ -52,7 +53,7 @@ class Contents:
         self.contents_scroll = tk.Frame(self.cvs_contents)
         quest_button_list = []
         for i in range(questDataHandler.getNumOfQuest()):
-            self.quest = Quest(self.contents_scroll,username,i,window_root,quest_list_page,answer_page)
+            self.quest = Quest(self.contents_scroll,username,i,window_root,quest_list_page,answer_page,reload_func)
             quest_button_list.append(self.quest)
         self.contents_scroll.pack(fill="both",expand=True)
 
@@ -134,15 +135,19 @@ class Code:
     
 
 class Main:
-    def __init__(self,root,username,answe_page):
+    def __init__(self,root,username,answe_page,window_root):
 
         self.root = root
+        self.username = username
+        self.answer_page = answe_page
+        self.window_root = window_root
 
         self.frame_main = root
+        self.frame_main.pack(fill="both",expand=True)
         self.main_canvas()    
         self.button() 
 
-        self.contents = Contents(self.frame_main,username,root,self.frame_main,answe_page)
+        self.contents = Contents(self.frame_main,username,window_root,self.frame_main,answe_page,self.reload)
         self.score = Score(self.frame_main)
         self.code = Code(self.frame_main,username)
 
@@ -177,3 +182,9 @@ class Main:
         self.contents.frame_contents.pack_forget()
         self.score.frame_score.pack_forget()
         self.code.frame_code.pack(fill=tk.BOTH,expand=True)
+    
+    def reload(self):
+        self.frame_main.destroy()
+        self.root = tk.Frame(self.window_root)
+        self.root.pack(fill="both",expand=True)
+        self.__init__(self.root,self.username,self.answer_page,self.window_root)

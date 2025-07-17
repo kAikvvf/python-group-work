@@ -101,6 +101,7 @@ class Question:
     def disable_buttons(self):
         self.editor.scoring_button.config(state='disabled')
         self.editor.sample_debug_button.config(state='disabled')
+        self.editor.type_area.config(state='disabled')
 
     def showQuestTab(self):
         self.quest_tab_button.config(state='disabled')

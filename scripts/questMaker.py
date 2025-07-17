@@ -75,11 +75,10 @@ class editor:
         num_of_input = 0
         for i in range(len(prog)):
             if "input(" in prog[i]:
-                inputed_data = sample_case[case_index]
-                prog[i] = prog[i].replace("input(",f"inputMode({inputed_data},")
+                prog[i] = prog[i].replace("input(",f"self.inputMode(")
                 num_of_input += 1
-            prog[i] = "    " + prog[i]+'\n'
-        prog = [f"sample_case = {inputed_data}\ndef inputMode(sample_index,*message):\n    if not message == ():\n        print(message[0])\n    return(sample_data[sample_index])\ndef generateResult():\n"]+prog
+            prog[i] = "        " + prog[i]+'\n'
+        prog = [f"class generateResult:\n    def __init__(self):\n        self.sample_data = {sample_case[case_index]}\n        self.sample_index = 0\n"]+prog+["    def inputMode(self,*message):\n        if not message == ():\n            print(message[0])\n        self.sample_index += 1\n        return(self.sample_data[self.sample_index-1])"]
 
         with open(f"scripts/run_temp/runProg{case_index}.py",'w',encoding="utf-8") as runFile:
             runFile.write("".join(prog))
