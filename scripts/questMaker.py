@@ -72,11 +72,20 @@ class editor:
     def debug(self,case_index,sample_case):
         prog = self.type_area.get('1.0','end').split('\n')
 
-        num_of_input = 0
         for i in range(len(prog)):
             if "input(" in prog[i]:
                 prog[i] = prog[i].replace("input(",f"self.inputMode(")
-                num_of_input += 1
+            if "while" in prog[i]:
+                while_term = prog[i].replace('while','')
+                while_sentence = prog[i]
+                prog[i] = f"for while_index in range(1000):\n            if not {while_term}\n                break\n            else:"
+                while_indent = 0
+                while while_sentence[while_indent*4:(while_indent+1)*4] == '    ':
+                    while_indent += 1
+                for j in range(i+1,len(prog)):
+                    indent = ''.join(['    ' for indent_str in range(while_indent+1)])
+                    if prog[j][0:while_indent+4] == indent:
+                        prog[j] = indent + prog[j]
             prog[i] = "        " + prog[i]+'\n'
         prog = [f"class generateResult:\n    def __init__(self):\n        self.sample_data = {sample_case[case_index]}\n        self.sample_index = 0\n"]+prog+["    def inputMode(self,*message):\n        if not message == ():\n            print(message[0])\n        self.sample_index += 1\n        return(self.sample_data[self.sample_index-1])"]
 
