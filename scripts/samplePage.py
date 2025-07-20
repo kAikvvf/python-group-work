@@ -13,7 +13,7 @@ class singleDisplay:
         label_height = 20
         sample_label = Label(master=self.root,text="サンプルケース",borderwidth=1,relief="solid")
         sample_label.place(height=label_height,relwidth=1/3,relx=0.0)
-        correct_answer_label = Label(master=self.root,text="正解",borderwidth=1,relief="solid")
+        correct_answer_label = Label(master=self.root,text="模範解答",borderwidth=1,relief="solid")
         correct_answer_label.place(height=label_height,relwidth=1/3,relx=1/3)
         result_label = Label(master=self.root,text="実行結果",borderwidth=1,relief="solid")
         result_label.place(height=label_height,relwidth=1/3,relx=2/3)

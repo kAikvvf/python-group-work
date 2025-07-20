@@ -10,8 +10,9 @@ import time
 '''
 def main(USERNAME): #引数にユーザー名を入力
     root = Tk()
-    root.title(f"Python Techful  -{USERNAME}-")
-    root.geometry('800x600')
+    root.title(f"Python Techful  -user : {USERNAME}-")
+    root.geometry('800x600+100+100')
+    root.wm_minsize(400,300)
 
     quest_select_page = Frame(root)
     answer_page = Frame(root)
@@ -20,7 +21,7 @@ def main(USERNAME): #引数にユーザー名を入力
     quest_select_page.pack(fill='both',expand=True)
 
     def onClosingWindow():
-        if messagebox.askokcancel(title='終了',message='本当に終了しますか？\n終了した場合、現在編集しているプログラムは保存されません。\n') == True:
+        if messagebox.askokcancel(title='終了',message='本当に終了しますか？') == True:
             root.destroy()
     root.protocol("WM_DELETE_WINDOW", onClosingWindow)
     root.mainloop()

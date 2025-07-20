@@ -2,7 +2,8 @@ class generateResult:
     def __init__(self):
         self.sample_data = ['861']
         self.sample_index = 0
-        print(self.inputMode('好きな整数を入力してください。'))
+        for i in range(10):
+            print(i)
         
     def inputMode(self,*message):
         if not message == ():

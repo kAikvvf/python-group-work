@@ -62,7 +62,9 @@ class Question:
             self.score_display = scoringDisplay(self.result_tab,question_index,result=[{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'},{'result':'','matches':'none'}],username=self.username,prog='',disable_button_prog=self.disable_buttons)
             self.showQuestTab()
         elif self.user_data_handeler.getStatus(self.question_index) == 'True':
-            self.editor.type_area.insert('1.0',self.user_data_handeler.getProgStatement(self.question_index).replace('\\n','\n'))
+            prog_statement = self.user_data_handeler.getProgStatement(self.question_index).replace('\\n','\n').split('\n')
+            for i in range(len(prog_statement)-1):
+                self.editor.type_area.insert(f'{i+1}.0',prog_statement[i])
             self.setScore()
             self.debug()
             self.disable_buttons()
