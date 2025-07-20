@@ -8,6 +8,8 @@ class loginPad:
     def __init__(self):
         self.root = Tk()
         self.root.title("ログイン")
+        self.root.geometry('+100+100')
+        self.root.resizable(False,False)
         
         with open("data/.user-list.txt","r") as user_data:
             self.user_data = user_data.read().split(".")
@@ -21,7 +23,13 @@ class loginPad:
         self.PASSWORD_INPUT = Entry(master=self.root,width=30)
         self.PASSWORD_INPUT.grid(row=2,column=1,padx=5,pady=3)
         Button(master=self.root,text="ログイン",command=self.verificateUser).grid(row=3,column=1,padx=5,pady=5)
-        Button(master=self.root,text="新規",command=self.newUser).grid(row=3,column=0,padx=5,pady=5)
+        Button(master=self.root,text="新規登録",command=self.newUser).grid(row=3,column=0,padx=5,pady=5)
+
+        def returnKeyPressedInLogin(event):
+            if not self.USERNAME_INPUT.get() == '' and not self.PASSWORD_INPUT.get() == '' :
+                self.verificateUser()
+        
+        self.root.bind_all('<Return>',returnKeyPressedInLogin)
 
         self.root.mainloop()
     #ユーザーを照合
@@ -38,6 +46,8 @@ class loginPad:
         self.root.destroy()
         new_user_win = Tk()
         new_user_win.title("ユーザーを新規作成")
+        new_user_win.geometry('+100+100')
+        new_user_win.resizable(False,False)
 
         def confirmNewUser():
             new_username = new_username_input.get()
@@ -72,6 +82,11 @@ class loginPad:
                         writer.writerows(empty_data)
                     new_user_win.destroy()
                     self.__init__()
+        
+        def return_to_login():
+            new_user_win.destroy()
+            self.__init__()
+
         Label(master=new_user_win,text="ユーザーを新規作成").grid(row=0,column=0,columnspan=2)
         Label(master=new_user_win,text="ユーザー名").grid(row=1,column=0)
         Label(master=new_user_win,text="パスワード").grid(row=2,column=0)
@@ -79,8 +94,16 @@ class loginPad:
         new_username_input.grid(row=1,column=1)
         new_password_input = Entry(master=new_user_win,width=30)
         new_password_input.grid(row=2,column=1)
+        Button(master=new_user_win,text='戻る',command=return_to_login).grid(row=3,column=0)
         Button(master=new_user_win,text="確認",command=confirmNewUser).grid(row=3,column=1)
         Label(master=new_user_win,text="*注意*\nパスワードは全て半角英数とする。また、パスワードは８桁以上。").grid(row=4,column=0,columnspan=2)
+
+        def returtKeyPressedInNewUser(event):
+            if not new_username_input.get() == '' and not new_password_input.get() == '':
+                confirmNewUser()
+    
+        new_user_win.bind_all('<Return>',returtKeyPressedInNewUser)
+
         new_user_win.mainloop()
 
     #ログイン成功時の処理

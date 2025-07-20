@@ -80,6 +80,8 @@ class userDataHandler:
         self.rewrite()
     
     def setScore(self,quest_index,score):
+        if score < 0:
+            score = 0
         self.user_data[quest_index+1]['score'] = score
         self.rewrite()
 

@@ -50,7 +50,7 @@ class scoringDisplay:
 
         if self.pass_or_not == True:
             score_basis = self.time_required.total_seconds() / (questDataHandler.getEstimatedRequredTime(quest_index)*60)
-            score = int(20/score_basis)-int(self.user_data_handeler.getNumOfConfirm(self.quest_index))
+            score = int(7/score_basis)-int(self.user_data_handeler.getNumOfConfirm(self.quest_index))
 
             if score >= 25:
                 score = 25

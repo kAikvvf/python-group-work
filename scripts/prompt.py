@@ -11,7 +11,7 @@ class editor:
 
         #Tkinter の設定
         self.editor_frame = Canvas(master=self.root)
-        self.type_area = Text(master=self.editor_frame,background="#4A4A4A",foreground="#9EFFFF",font=("Source Han Code JP",11,"bold"),wrap='none')
+        self.type_area = Text(master=self.editor_frame,font=("Source Han Code JP",11,"bold"),wrap='none')
         self.editor_frame.place(relheight=1.0,relwidth=0.5,relx=0.5,rely=0.0)
         button_area = Frame(master=self.editor_frame)
         self.sample_debug_button = Button(master=button_area,text="サンプル実行")
@@ -60,7 +60,6 @@ class editor:
             return 'break'
 
         #__実行部分__
-        self.type_area.configure(insertbackground="#FFFFFF",insertwidth=3)
         self.type_area.bind('<Return>',arrangeIndent)
         self.type_area.bind('<Tab>',tabKey)
         self.type_area.bind('<Shift-Tab>',shiftTabKey)
@@ -69,9 +68,6 @@ class editor:
         self.entire_result = []
         for i in range(len(questDataHandler.getSampleCase(self.prog_index))):
             self.debug(i)
-
-    def scoreing(self):
-        print("scoring",self.debug(0))
 
     def debug(self,case_index):
         sample_case = questDataHandler.getSampleCase(self.prog_index)[case_index]
@@ -98,7 +94,7 @@ class editor:
         with open(f"scripts/run_temp/runProg{case_index}.py",'w',encoding="utf-8") as runFile:
             runFile.write("".join(prog))
         runFile.close()
-        
+
         #実行ファイルをインポートして実行
         sys.stdout = open("scripts/debugTerminal.txt",'w',encoding='utf-8')
         self.error = ''
@@ -139,7 +135,6 @@ class editor:
             sys.stdout = sys.__stdout__    
         with open("scripts/debugTerminal.txt",'r',encoding='utf-8') as read_data:
                 self.debugResult = read_data.read()
-                #print(self.debugResult)
 
         correct_answer = questDataHandler.getCorrectAnswer(self.prog_index)[case_index]
         if self.debugResult == correct_answer:
