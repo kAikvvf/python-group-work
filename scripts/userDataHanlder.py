@@ -80,9 +80,10 @@ class userDataHandler:
         self.rewrite()
     
     def setScore(self,quest_index,score):
-        if score < 0:
-            score = 0
-        self.user_data[quest_index+1]['score'] = score
+        score_to_write = int(score)
+        if score_to_write < 0:
+            score_to_write = 0
+        self.user_data[quest_index+1]['score'] = score_to_write
         self.rewrite()
 
     def rewrite(self):
