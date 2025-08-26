@@ -21,13 +21,12 @@ class editor:
         button_area.pack(side=BOTTOM)
         self.type_area.pack(fill='both',expand=1,padx=3)
 
-
         def addColor(*args,**kwargs):
-            buitlin_lst = ['id', 'abs', 'all', 'any', 'bin', 'chr', 'hex', 'int', 'len', 'map', 'max', 'min', 'oct', 'ord', 'pow', 'set', 'str', 'sum', 'zip','bool', 'dict', 'eval', 'exec', 'exit', 'hash', 'help', 'iter', 'list', 'next', 'open', 'repr', 'type', 'vars', 'input', 'print', 'range', 'round', 'slice', 'super', 'ascii', 'bytes', 'filter', 'format', 'object', 'sorted', 'aiter', 'anext', 'callable', 'compile', 'complex', 'getattr', 'globals', 'hasattr', 'locals', 'property', 'setattr', 'bytearray', 'classmethod', 'frozenset','isinstance', 'issubclass', 'breakpoint', 'staticmethod', 'memoryview']
+            builtin_lst = ['id', 'abs', 'all', 'any', 'bin', 'chr', 'hex', 'int', 'len', 'map', 'max', 'min', 'oct', 'ord', 'pow', 'set', 'str', 'sum', 'zip','bool', 'dict', 'eval', 'exec', 'exit', 'hash', 'help', 'iter', 'list', 'next', 'open', 'repr', 'type', 'vars', 'input', 'print', 'range', 'round', 'slice', 'super', 'ascii', 'bytes', 'filter', 'format', 'object', 'sorted', 'aiter', 'anext', 'callable', 'compile', 'complex', 'getattr', 'globals', 'hasattr', 'locals', 'property', 'setattr', 'bytearray', 'classmethod', 'frozenset','isinstance', 'issubclass', 'breakpoint', 'staticmethod', 'memoryview']
             bracket_lst = ['[',']','(',')','{','}']
             number_lst = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
             operator_lst = ['+','-','/','*','%']
-            iterable_lst = ['for','in','while','True','False','if','else','try','except','finally','break']
+            iterable_lst = ['for','in','while','True','False','if','else','try','except','finally','break','def','return']
             variable_lst = []
             variable_used = ''
             prog = self.type_area.get('1.0','end').split('\n')
@@ -51,7 +50,8 @@ class editor:
                             row_line[i] = True
                         if row_line[i] == 'False':
                             row_line[i] = False
-                    
+                        if 'input' in row_line[i]:
+                            row_line[i] = row_line[i].replace('input','str')
                     var_string = variable_used+'\n'+''.join([str(i) for i in row_line])
                     try:
                         exec(var_string)
@@ -62,7 +62,7 @@ class editor:
                             variable_lst.append(row_line[0])
                             variable_used = var_string
 
-                if 'for' in prog[prog_row]:
+                if 'for' in prog[prog_row] or 'def' in prog[prog_row]:
                     row_line = prog[prog_row].split(' ')
                     while '' in row_line:
                         row_line.remove('')
@@ -77,13 +77,28 @@ class editor:
                             else:
                                 variable_lst.append(row_line[1])
                                 variable_used = var_string
-                        
+
+                    elif row_line[0] == 'def':
+                        if len(row_line) >= 2:
+                            try:
+                                func_name = ''.join(row_line[1:]).split('(')[0]
+                                var =  ''.join(row_line[1:]).split('(')[1].replace(')','').replace(':','').split(',')
+                            except:
+                                pass
+                            else:
+                                builtin_lst.append(func_name)
+                                if len(var) >= 1:
+                                    for i in var:
+                                        if i != '':
+                                            variable_lst.append(i)
+                                            variable_used = variable_used+'\n'+f"{row_line[1]}='var'"
+                        print()
             tag_refer = []
             for i in operator_lst:
                 tag_refer.append({'len':len(i),'string':i,'tag':'operator'})
             for i in number_lst:
                 tag_refer.append({'len':len(i),'string':i,'tag':'number'})
-            for i in buitlin_lst:
+            for i in builtin_lst:
                 tag_refer.append({'len':len(i),'string':i,'tag':'builtin'})
             for i in bracket_lst:
                 tag_refer.append({'len':len(i),'string':i,'tag':'bracket'})
@@ -165,12 +180,10 @@ class editor:
                                     if m == '\u0022':
                                         num_double_quotation_before +=1
                                         string_before.replace('\u0022','`',1)
-                                    print(string_before)
                                 for m in string_after:
                                     if m == '\u0022':
                                         num_double_quotation_after +=1
                                         string_after.replace('\u0022','`',1)
-                                    print(string_after)
                                 num_single_quotation_before = 0
                                 num_single_quotation_after = 0
                                 string_before = prog[row][:index].split('\u0022')[len(prog[row][:index].split('\u0022'))-1]
@@ -179,12 +192,10 @@ class editor:
                                     if m == '\u0022':
                                         num_single_quotation_before +=1
                                         string_before.replace('\u0022','`',1)
-                                    print(string_before)
                                 for m in string_after:
                                     if m == '\u0022':
                                         num_single_quotation_after +=1
                                         string_after.replace('\u0022','`',1)
-                                    print(string_after)
 
                                 if not((num_double_quotation_after % 2 == 0 and num_double_quotation_before % 2 == 0) or (num_single_quotation_after % 2 == 0 and num_single_quotation_before % 2 == 0)) or (num_double_quotation_after == 0 and num_double_quotation_before == 0) or (num_single_quotation_after == 0 and num_single_quotation_before == 0) and not 'string' in self.type_area.tag_names(f'{row+1}.{index}') and 'unclosed_s' in self.type_area.tag_names(f'{row+1}.{index}'):
                                     bracket_index.append(f'{row+1}.{index}')
@@ -196,6 +207,7 @@ class editor:
             if len(bracket_index) >= 1:
                 self.type_area.tag_add('unclosed_b',f'{bracket_index[len(bracket_index)-1]} +1char','end')
 
+        self.addColor = addColor
         def keyInput(event):
             if event.state != 4 and len(event.keysym) == 1:
                 if len(str(event.keycode)) == 5:
@@ -268,13 +280,15 @@ class editor:
         self.type_area.tag_config('iterable',foreground="#E18ADD")
         self.type_area.tag_config('builtin',foreground="#F3DE92")
         self.type_area.tag_config('number',foreground="#9AFFC7")
-        self.type_area.tag_config('bracket',foreground="#FFE089")
+        self.type_area.tag_config('bracket',foreground="#FFAD09")
         self.type_area.tag_config('operator',foreground="#FFFFFF")
         self.type_area.tag_config('variable',foreground="#97C6FF")
         self.type_area.tag_config('indent',background="#707070")
         self.type_area.tag_config('string',foreground="#FFC272")
         self.type_area.tag_config('unclosed_b',background="#5D5D5D")
         self.type_area.tag_config('unclosed_s',background="#564218",foreground='white')
+
+        addColor()
     def sampleDebug(self):
         self.entire_result = []
         for i in range(len(questDataHandler.getSampleCase(self.prog_index))):
@@ -354,7 +368,7 @@ class editor:
             self.matches = False
         
         self.entire_result.append({'result':self.debugResult,'matches':self.matches})
-
+        self.addColor()
 
     def show(self):
         self.editor_frame.place(relheight=1.0,relwidth=0.5,relx=0.5,rely=0.0)
