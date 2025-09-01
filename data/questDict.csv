@@ -1,3 +1,17 @@
 title,quest_statement,estimated_required_time,sample_case,correct_answer
 
-標準出力1,1'好きな整数を入力してください。' と標準出力で聞き、取得した値をそのまま出力しなさい。\n,5,2<sample_separator>34<sample_separator>861<sample_separator>12718,好きな整数を入力してください。\n2\n<answer_separator>好きな整数を入力してください。\n34\n<answer_separator>好きな整数を入力してください。\n861\n<answer_separator>好きな整数を入力してください。\n12718\n
+標準出力,'好きな整数を入力してください。' と標準出力で聞き、取得した値をそのまま出力しなさい。\n,5,2<sample_separator>34<sample_separator>861<sample_separator>12718,好きな整数を入力してください。\n2\n<answer_separator>好きな整数を入力してください。\n34\n<answer_separator>好きな整数を入力してください。\n861\n<answer_separator>好きな整数を入力してください。\n12718\n
+
+演算子１,"ユーザー入力で ""好きな整数１""と""好きな整数２"" を聞き、それらの和を標準出力しなさい。\n",5,4<case_separator>5<sample_separator>9<case_separator>2<sample_separator>20<case_separator>13,好きな整数１\n好きな整数２\n9\n<answer_separator>好きな整数１\n好きな整数２\n11\n<answer_separator>好きな整数１\n好きな整数２\n33\n
+
+演算子２,"ユーザー入力で ""好きな整数１""と""好きな整数２"" を聞き、それらの差を標準出力しなさい。\n",5,4<case_separator>3<sample_separator>6<case_separator>9<sample_separator>21<case_separator>7,好きな整数１\n好きな整数２\n1\n<answer_separator>好きな整数１\n好きな整数２\n-3\n<answer_separator>好きな整数１\n好きな整数２\n14\n
+
+演算子３,"ユーザー入力で ""かける数""と""かけられる数"" を聞き、それの積を標準出力しなさい。\n",5,2<case_separator>3<sample_separator>-3<case_separator>4<sample_separator>12<case_separator>12,かける数１\nかけられる２\n6\n<answer_separator>かける数１\nかけられる２\n-12\n<answer_separator>かける数１\nかけられる２\n144\n
+
+演算子４,"ユーザー入力で ""割る数""と""割られる数"" を聞き、それの商を標準出力しなさい。\n",5,3<case_separator>9<sample_separator>4<case_separator>24<sample_separator>3<case_separator>7,割る数１\n割られる２\n3.0\n<answer_separator>割る数１\n割られる２\n6.0\n<answer_separator>割る数１\n割られる２\n2.3333333333333335\n
+
+演算子５,"ユーザー入力で ""割る数""と""割られる数"" を聞き、それの商の余りを標準出力しなさい。\n",5,3<case_separator>20<sample_separator>5<case_separator>49<sample_separator>7<case_separator>11,割る数１\n割られる２\n2\n<answer_separator>割る数１\n割られる２\n4\n<answer_separator>割る数１\n割られる２\n4\n
+
+演算子６,"ユーザー入力で ""底""と""指数""を聞き、底の指数乗を標準出力しなさい。\n",5,2<case_separator>3<sample_separator>3<case_separator>5<sample_separator>9<case_separator>8,底\n指数\n8\n<answer_separator>底\n指数\n243\n<answer_separator>底\n指数\n43046721\n
+
+hello world
