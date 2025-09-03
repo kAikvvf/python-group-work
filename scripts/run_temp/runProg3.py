@@ -1,6 +1,6 @@
 class generateResult:
     def __init__(self):
-        self.sample_data = ['1.65', '59.9']
+        self.sample_data = ['1.55', '90.1']
         self.sample_index = 0
         class Person:
             def __init__(self, height, weight):
