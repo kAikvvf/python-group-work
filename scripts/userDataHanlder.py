@@ -41,7 +41,8 @@ class userDataHandler:
             return('null')
     
     def getProgStatement(self,quest_index):
-        return(self.user_data[quest_index+1]['prog_statement'])
+        statement = self.user_data[quest_index+1]['prog_statement']
+        return(statement)
 
     def setStartTime(self,quest_index):
         time_now = datetime.datetime.now()
@@ -75,10 +76,11 @@ class userDataHandler:
         self.user_data[quest_index+1]['status'] = status
         self.rewrite()
     
-    def setProgStatement(self,quest_index:int,prog_statement:bool):
-        self.user_data[quest_index+1]['prog_statement'] = prog_statement.replace('\n','\\n')
+    def setProgStatement(self,quest_index:int,prog_statement:str):
+        print(prog_statement.replace('\n','\\n'))
+        self.user_data[quest_index+1]['prog_statement'] = prog_statement.replace('\n','<Return-Separator>')
         self.rewrite()
-    
+
     def setScore(self,quest_index,score):
         score_to_write = int(score)
         if score_to_write < 0:

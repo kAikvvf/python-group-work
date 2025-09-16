@@ -50,7 +50,7 @@ class editor:
                             row_line[i] = True
                         if row_line[i] == 'False':
                             row_line[i] = False
-                        if 'input' in row_line[i]:
+                        if 'input' in str(row_line[i]):
                             row_line[i] = row_line[i].replace('input','str')
                     var_string = variable_used+'\n'+''.join([str(i) for i in row_line])
                     try:
@@ -119,7 +119,7 @@ class editor:
                 for tag in tag_refer:
                     while tag['string'] in prog_to_find[row]:
                         index = prog_to_find[row].index(tag['string'])
-                        row_with_tag.append({'tag':tag['tag'],'string':tag['string'],'start':f'{row+1}.{index}','end':f'{row+1}.{index+tag['len']}'})
+                        row_with_tag.append({'tag':tag['tag'],'string':tag['string'],'start':f'{row+1}.{index}','end':f"{row+1}.{index+tag['len']}"})
                         prog_to_find[row] = prog_to_find[row].replace(tag['string'],''.join(['`' for i in range(tag['len'])]),1)
 
             for attaching_tag in row_with_tag:

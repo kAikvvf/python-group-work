@@ -12,7 +12,6 @@ class scoringDisplay:
         self.username = username
 
         self.user_data_handeler = userDataHandler(self.username)
-
         self.user_data_handeler.setProgStatement(self.quest_index,prog)
         self.user_data_handeler.addNumOfConfirm(self.quest_index)
 
