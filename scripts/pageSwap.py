@@ -3,7 +3,7 @@ from tkinter import messagebox
 import datetime
 from scripts import questDataHandler
 from scripts.userDataHanlder import userDataHandler
-from scripts.kotone import Question
+from scripts.answerPage import Question
 
 class Quest:
     def __init__(self,master,username,quest_index,window_root,quest_list_page,answer_page,reload_func):
