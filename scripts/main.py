@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
-from scripts.kotone import Question
-from scripts.revenge import Main
+from scripts.answerPage import Question
+from scripts.pageSwap import Main
 import time
 
 '''

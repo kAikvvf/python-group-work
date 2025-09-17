@@ -114,5 +114,5 @@ class loginPad:
 
     #ログイン失敗時の処理
     def failLogin(self):
-        print("Failed To Login")
-        messagebox.showerror("ログインエラー","ログインできません。\nユーザーまたはパスワードが間違えています。\n未登録の場合は ユーザー を新規作成して下さ。")
+        #print("Failed To Login")
+        messagebox.showerror("ログインエラー","ログインできません。\nユーザーまたはパスワードが間違えています。\n未登録の場合は ユーザー を新規作成して下さい。")
