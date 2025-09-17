@@ -1,10 +1,9 @@
 class generateResult:
     def __init__(self):
-        self.sample_data = ['861']
+        self.sample_data = ['花子']
         self.sample_index = 0
-        x = self.inputMode('好きな整数を入力してください。')
-        print(x)
-        
+        print('名前を入力してください')
+        print('こんにちは、小太郎さん')
         
         
     def inputMode(self,*message):
