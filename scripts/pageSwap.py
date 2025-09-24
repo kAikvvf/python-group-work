@@ -153,7 +153,7 @@ class Code:
         self.cvs_code = tk.Canvas(self.frame_code,yscrollcommand=self.scrolly.set,xscrollcommand=self.scrollx.set)
         self.cvs_code.pack(fill=tk.BOTH,expand=True)
 
-        self.cvs_code.configure(scrollregion=(0,0,800,800))
+        self.cvs_code.configure(scrollregion=(0,0,800,questDataHandler.getNumOfQuest()*50))
         self.scrolly.config(command=self.cvs_code.yview)
         self.scrollx.config(command=self.cvs_code.xview)
 

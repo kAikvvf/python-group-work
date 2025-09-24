@@ -1,9 +1,9 @@
 class generateResult:
     def __init__(self):
-        self.sample_data = ['小太郎']
+        self.sample_data = ['']
         self.sample_index = 0
-        print('名前を入力してください')
-        print('こんにちは、小太郎さん')
+        print('Hello World')
+        
         
         
     def inputMode(self,*message):

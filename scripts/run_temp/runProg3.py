@@ -7,6 +7,7 @@ class generateResult:
         
         
         
+        
     def inputMode(self,*message):
         if not message == ():
             print(message[0])
